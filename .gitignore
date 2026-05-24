@@ -1,0 +1,16 @@
+# Ruwe data (te groot, lokaal gegenereerd)
+data/*.csv
+
+# Maar processed data WEL meenemen
+!data/processed/
+!data/processed/*.csv
+
+# Omgeving en secrets
+venv/
+.env
+__pycache__/
+*.pyc
+logs/
+
+# VS Code
+.vscode/
