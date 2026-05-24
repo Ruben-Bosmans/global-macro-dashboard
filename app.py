@@ -191,6 +191,15 @@ if page == "📊 Overview":
     st.title("📊 Global Macro — Overview")
     if not summary.empty:
         st.caption(f"Data last updated: {summary['last_date'].max()}")
+    st.info(
+    "🚧 **Work in progress** — This dashboard is a personal hobby project "
+    "in active development. Many extensions are planned: additional data sources, "
+    "AI-generated weekly reports, deeper analysis tools and more. "
+    "Feedback, suggestions or collaboration ideas are always welcome — "
+    "connect with me on [LinkedIn](https://www.linkedin.com/in/ruben-bosmans) "
+    "or open an issue on [GitHub](https://github.com/Ruben-Bosmans/global-macro-dashboard/issues).",
+    icon="💡"
+    )
 
     # ── Key metrics ────────────────────────────────────────────────
     st.subheader("Key Snapshot")
