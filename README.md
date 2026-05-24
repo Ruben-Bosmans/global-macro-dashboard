@@ -7,4 +7,4 @@ across markets, rates, inflation, credit and more.
 
 **Data sources:** FRED, ECB, IMF, World Bank, OECD, Yahoo Finance
 
-**Live app:** [link follows after deployment]
+**Live app:** https://global-macro-dashboard-hobby.streamlit.app/
