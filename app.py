@@ -38,6 +38,39 @@ def load_series(name):
         return df.sort_values("date")
     except Exception:
         return None
+    
+@st.cache_data(ttl=3600)
+def load_imf_gdp():
+    raw = Path("data")
+    countries = {
+        "us":"US","uk":"UK","de":"Germany","fr":"France","jp":"Japan",
+        "cn":"China","in":"India","br":"Brazil","ca":"Canada","au":"Australia",
+        "kr":"S. Korea","mx":"Mexico","it":"Italy","es":"Spain","id":"Indonesia",
+        "nl":"Netherlands","sa":"Saudi Arabia","tr":"Turkey","za":"S. Africa",
+        "pl":"Poland","se":"Sweden","no":"Norway","be":"Belgium","at":"Austria",
+    }
+    rows = []
+    for code, name in countries.items():
+        path = raw / f"imf_gdp_growth_{code}.csv"
+        if not path.exists():
+            continue
+        try:
+            df = pd.read_csv(path, parse_dates=["date"]).dropna()
+            df["year"] = df["date"].dt.year
+            df = df[df["year"] <= 2025]
+            if df.empty:
+                continue
+            last = df.sort_values("date").iloc[-1]
+            rows.append({
+                "Country":        name,
+                "GDP Growth (%)": round(float(last["value"]), 2),
+                "Year":           int(last["year"]),
+            })
+        except Exception:
+            pass
+    if not rows:
+        return pd.DataFrame(columns=["Country", "GDP Growth (%)", "Year"])
+    return pd.DataFrame(rows).sort_values("GDP Growth (%)", ascending=False)
 
 # ── Chart helpers ─────────────────────────────────────────────────
 def plot_line(df, col="value", title="", ylabel="",
@@ -193,7 +226,7 @@ if page == "📊 Overview":
         st.caption(f"Data last updated: {summary['last_date'].max()}")
     st.info(
     "🚧 **Work in progress** — This dashboard is a personal hobby project "
-    "in active development. Many extensions are planned: additional data sources, "
+    "in active development. Many extensions (and fixes) are planned: additional data sources, "
     "AI-generated weekly reports, deeper analysis tools and more. "
     "Feedback, suggestions or collaboration ideas are always welcome — "
     "connect with me on [LinkedIn](https://www.linkedin.com/in/ruben-bosmans) "
@@ -864,37 +897,9 @@ elif page == "💼 Economy":
 
     with tab1:
         st.subheader("GDP Growth — IMF Annual (%)")
-
-        @st.cache_data(ttl=3600)
-        def load_imf_gdp():
-            raw = Path("data")
-            countries = {
-                "us":"US","uk":"UK","de":"Germany","fr":"France","jp":"Japan",
-                "cn":"China","in":"India","br":"Brazil","ca":"Canada","au":"Australia",
-                "kr":"S. Korea","mx":"Mexico","it":"Italy","es":"Spain","id":"Indonesia",
-                "nl":"Netherlands","sa":"Saudi Arabia","tr":"Turkey","za":"S. Africa",
-                "pl":"Poland","se":"Sweden","no":"Norway","be":"Belgium","at":"Austria",
-            }
-            rows = []
-            for code, name in countries.items():
-                path = raw / f"imf_gdp_growth_{code}.csv"
-                if not path.exists():
-                    continue
-                try:
-                    df = pd.read_csv(path, parse_dates=["date"]).dropna().sort_values("date")
-                    last = df.iloc[-1]
-                    rows.append({
-                        "Country":        name,
-                        "GDP Growth (%)": round(last["value"], 2),
-                        "Year":           int(last["date"].year),
-                    })
-                except Exception:
-                    pass
-            return pd.DataFrame(rows).sort_values("GDP Growth (%)", ascending=False)
-
         gdp_df = load_imf_gdp()
         if gdp_df.empty:
-            st.warning("No GDP data found.")
+            st.info("GDP data is only available in the local version of this app.")
         else:
             st.dataframe(gdp_df, hide_index=True, use_container_width=True)
 
