@@ -467,28 +467,40 @@
       "value": 100.08,
       "unit": "idx",
       "status": "Stable",
-      "signal": 0
+      "signal": 0,
+      "duration_months": 0
     },
     "gold": {
       "label": "Gold (USD/oz)",
       "value": 4114.0,
       "unit": "USD",
       "status": "Falling",
-      "signal": -1
+      "signal": -1,
+      "duration_months": 0
+    },
+    "gold_sp500_ratio": {
+      "label": "Gold / S&P 500 Ratio",
+      "value": 0.5662,
+      "unit": "ratio",
+      "status": "Falling",
+      "signal": 1,
+      "duration_months": 0
     },
     "credit_em_hy_oas": {
       "label": "EM HY Spreads",
       "value": 3.0,
       "unit": "bps",
       "status": "Normal",
-      "signal": 1
+      "signal": 1,
+      "duration_months": 37
     },
     "vix": {
       "label": "VIX",
       "value": 20.6,
       "unit": "idx",
       "status": "Elevated",
-      "signal": 0
+      "signal": 0,
+      "duration_months": 1
     }
   },
   "divergence": {

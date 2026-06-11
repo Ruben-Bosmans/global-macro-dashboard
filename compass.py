@@ -176,50 +176,99 @@ def make_signal(label, value, unit, thresholds, interpretations):
     return {"label": label, "value": value, "unit": unit,
             "status": status, "signal": sig}
 
+def signal_duration(df, thresholds):
+    """
+    Count consecutive months the current signal status has been maintained.
+    Returns 0 if insufficient data.
+    """
+    if df is None or df.empty:
+        return 0
+    low, high = thresholds
+
+    def status_code(val):
+        if val <= low: return 0
+        if val >= high: return 2
+        return 1
+
+    try:
+        df2 = df[["date", "value"]].copy()
+        df2["ym"] = df2["date"].dt.to_period("M")
+        monthly = df2.groupby("ym")["value"].last().sort_index()
+        if monthly.empty:
+            return 0
+        current = status_code(monthly.iloc[-1])
+        count = 0
+        for val in reversed(monthly.tolist()):
+            if status_code(val) == current:
+                count += 1
+            else:
+                break
+        return max(count, 1)
+    except Exception:
+        return 0
 
 def signals_us():
     out = {}
     mapping = [
-        ("credit_spread_10y_2y", "Yieldcurve (10J-2J)",      "%",   (-0.25, 0.25),
-         ["Normal", "Flat",         "Inverted"]),
-        ("credit_us_hy_oas",     "US HY Spreads",             "bps", (350,   500),
-         ["Normal", "Elevated",     "Stress"]),
-        ("credit_us_ig_oas",     "US IG Spreads",             "bps", (120,   200),
-         ["Normal", "Elevated",     "Stress"]),
-        ("vix",                  "VIX (marktangst)",          "idx", (18,    28),
-         ["Calm",  "Elevated",     "Fear"]),
-        ("real_rate_us",         "Reële Rente VS",            "%",   (0.5,   2.0),
-         ["Accommodative", "Neutral", "Restrictive"]),
+        ("credit_spread_10y_2y", "Yield Curve (10Y-2Y)",  "%",   (-0.25, 0.25),
+         ["Normal",        "Flat",      "Inverted"     ]),
+        ("credit_us_hy_oas",     "US HY Spreads",         "bps", (350,   500),
+         ["Normal",        "Elevated",  "Stress"       ]),
+        ("credit_us_ig_oas",     "US IG Spreads",         "bps", (120,   200),
+         ["Normal",        "Elevated",  "Stress"       ]),
+        ("vix",                  "VIX (market fear)",     "idx", (18,    28),
+         ["Calm",          "Elevated",  "Fear"         ]),
+        ("real_rate_us",         "US Real Rate",          "%",   (0.5,   2.0),
+         ["Accommodative", "Neutral",   "Restrictive"  ]),
     ]
     for fname, label, unit, thr, interp in mapping:
         df = load(fname)
         if df is not None:
             val = round(float(df["value"].iloc[-1]), 2)
             out[fname] = make_signal(label, val, unit, thr, interp)
+            out[fname]["duration_months"] = signal_duration(df, thr)
+
+    # Gold / S&P 500 ratio — flight-to-safety indicator
+    gold_df  = load("gold")
+    sp500_df = load("sp500")
+    if gold_df is not None and sp500_df is not None:
+        merged = pd.merge_asof(
+            gold_df[["date", "value"]].rename(columns={"value": "gold"}),
+            sp500_df[["date", "value"]].rename(columns={"value": "sp500"}),
+            on="date", direction="nearest"
+        ).dropna()
+        if not merged.empty:
+            merged["ratio"] = merged["gold"] / merged["sp500"]
+            last_ratio   = round(float(merged["ratio"].iloc[-1]), 4)
+            dir_val, _   = get_direction(merged["ratio"], window=3, threshold=0.015)
+            status       = "Rising" if dir_val == 1 else ("Falling" if dir_val == -1 else "Stable")
+            out["gold_sp500_ratio"] = {
+                "label":           "Gold / S&P 500 Ratio",
+                "value":           last_ratio,
+                "unit":            "ratio",
+                "status":          status,
+                "signal":          0 if dir_val == 0 else (-1 if dir_val == 1 else 1),
+                "duration_months": 0,
+            }
     return out
 
 
 def signals_eu():
     out = {}
     # BTP-Bund spread: lage grens = normaal, hoge grens = stress
-    df = load("spread_it_de")
-    if df is not None:
-        val = round(float(df["value"].iloc[-1]), 1)
-        out["spread_it_de"] = make_signal(
-            "BTP-Bund Spread (IT-DE)", val, "bps", (130, 250),
-            ["Normal", "Elevated", "Fragmentation risk"])
-    df = load("credit_eu_hy_oas")
-    if df is not None:
-        val = round(float(df["value"].iloc[-1]), 1)
-        out["credit_eu_hy_oas"] = make_signal(
-            "EU HY Spreads", val, "bps", (380, 550),
-            ["Normal", "Elevated", "Stress"])
-    df = load("real_rate_de")
-    if df is not None:
-        val = round(float(df["value"].iloc[-1]), 2)
-        out["real_rate_de"] = make_signal(
-            "Reële Rente DE", val, "%", (0.5, 2.0),
-            ["Accommodative", "Neutral", "Restrictive"])
+    for fname, label, unit, thr, interp in [
+        ("spread_it_de",     "BTP-Bund Spread (IT-DE)", "bps", (130, 250),
+         ["Normal", "Elevated",      "Fragmentation risk"]),
+        ("credit_eu_hy_oas", "EU HY Spreads",           "bps", (380, 550),
+         ["Normal", "Elevated",      "Stress"          ]),
+        ("real_rate_de",     "Real Rate DE",            "%",   (0.5, 2.0),
+         ["Accommodative",   "Neutral",   "Restrictive" ]),
+    ]:
+        df = load(fname)
+        if df is not None:
+            val = round(float(df["value"].iloc[-1]), 2)
+            out[fname] = make_signal(label, val, unit, thr, interp)
+            out[fname]["duration_months"] = signal_duration(df, thr)
     df = load("ecb_euribor_3m")
     if df is not None:
         val = round(float(df["value"].iloc[-1]), 3)
@@ -234,37 +283,62 @@ def signals_eu():
 
 def signals_global():
     out = {}
-    # DXY: stijgende dollar = druk op EM = negatief voor globale groei
+
+    # DXY — dollar strength
     df = load("dxy")
     if df is not None:
-        val = round(float(df["value"].iloc[-1]), 2)
+        val    = round(float(df["value"].iloc[-1]), 2)
         dir_val, _ = get_direction(df["value"], window=3, threshold=0.5)
         out["dxy"] = {
-            "label": "Dollar Index (DXY)", "value": val, "unit": "idx",
+            "label":  "Dollar Index (DXY)", "value": val, "unit": "idx",
             "status": "Rising" if dir_val == 1 else ("Falling" if dir_val == -1 else "Stable"),
-            "signal": -dir_val,  # stijgende dollar is negatief voor EM/global
+            "signal": -dir_val,
+            "duration_months": 0,
         }
+
+    # Gold price trend
     df = load("gold")
     if df is not None:
-        val = round(float(df["value"].iloc[-1]), 0)
+        val    = round(float(df["value"].iloc[-1]), 0)
         dir_val, _ = get_direction(df["value"], window=3, threshold=15.0)
         out["gold"] = {
-            "label": "Gold (USD/oz)", "value": val, "unit": "USD",
+            "label":  "Gold (USD/oz)", "value": val, "unit": "USD",
             "status": "Rising" if dir_val == 1 else ("Falling" if dir_val == -1 else "Stable"),
             "signal": dir_val,
+            "duration_months": 0,
         }
-    df = load("credit_em_hy_oas")
-    if df is not None:
-        val = round(float(df["value"].iloc[-1]), 1)
-        out["credit_em_hy_oas"] = make_signal(
-            "EM HY Spreads", val, "bps", (400, 600),
-            ["Normal", "Elevated", "Stress"])
-    df = load("vix")
-    if df is not None:
-        val = round(float(df["value"].iloc[-1]), 1)
-        out["vix"] = make_signal(
-            "VIX", val, "idx", (18, 28),
-            ["Calm", "Elevated", "Fear"])
+
+    # Gold / S&P 500 ratio
+    sp500_df = load("sp500")
+    gold_df  = load("gold")
+    if gold_df is not None and sp500_df is not None:
+        merged = pd.merge_asof(
+            gold_df[["date","value"]].rename(columns={"value":"gold"}),
+            sp500_df[["date","value"]].rename(columns={"value":"sp500"}),
+            on="date", direction="nearest"
+        ).dropna()
+        if not merged.empty:
+            merged["ratio"] = merged["gold"] / merged["sp500"]
+            last_ratio  = round(float(merged["ratio"].iloc[-1]), 4)
+            dir_val, _  = get_direction(merged["ratio"], window=3, threshold=0.015)
+            out["gold_sp500_ratio"] = {
+                "label":  "Gold / S&P 500 Ratio", "value": last_ratio, "unit": "ratio",
+                "status": "Rising" if dir_val == 1 else ("Falling" if dir_val == -1 else "Stable"),
+                "signal": 0 if dir_val == 0 else (-1 if dir_val == 1 else 1),
+                "duration_months": 0,
+            }
+
+    # EM HY spreads and VIX (with duration)
+    for fname, label, unit, thr, interp in [
+        ("credit_em_hy_oas", "EM HY Spreads", "bps", (400, 600), ["Normal", "Elevated", "Stress"]),
+        ("vix",              "VIX",           "idx", (18,  28),  ["Calm",   "Elevated", "Fear"  ]),
+    ]:
+        df = load(fname)
+        if df is not None:
+            val = round(float(df["value"].iloc[-1]), 1)
+            out[fname] = make_signal(label, val, unit, thr, interp)
+            out[fname]["duration_months"] = signal_duration(df, thr)
+
     return out
 
 

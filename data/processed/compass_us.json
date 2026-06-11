@@ -469,39 +469,52 @@
   ],
   "validation": {
     "credit_spread_10y_2y": {
-      "label": "Yieldcurve (10J-2J)",
+      "label": "Yield Curve (10Y-2Y)",
       "value": 0.42,
       "unit": "%",
       "status": "Inverted",
-      "signal": -1
+      "signal": -1,
+      "duration_months": 19
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
       "value": 2.78,
       "unit": "bps",
       "status": "Normal",
-      "signal": 1
+      "signal": 1,
+      "duration_months": 37
     },
     "credit_us_ig_oas": {
       "label": "US IG Spreads",
       "value": 0.75,
       "unit": "bps",
       "status": "Normal",
-      "signal": 1
+      "signal": 1,
+      "duration_months": 37
     },
     "vix": {
-      "label": "VIX (marktangst)",
+      "label": "VIX (market fear)",
       "value": 20.63,
       "unit": "idx",
       "status": "Elevated",
-      "signal": 0
+      "signal": 0,
+      "duration_months": 1
     },
     "real_rate_us": {
-      "label": "Reële Rente VS",
+      "label": "US Real Rate",
       "value": 0.37,
       "unit": "%",
       "status": "Accommodative",
-      "signal": 1
+      "signal": 1,
+      "duration_months": 1
+    },
+    "gold_sp500_ratio": {
+      "label": "Gold / S&P 500 Ratio",
+      "value": 0.5662,
+      "unit": "ratio",
+      "status": "Falling",
+      "signal": 1,
+      "duration_months": 0
     }
   }
 }

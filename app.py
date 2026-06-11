@@ -392,10 +392,14 @@ def render_compass(data):
         sig_icon = {1: "🟢", 0: "🟡", -1: "🔴"}
         rows = []
         for s in val_signals.values():
+            duration   = s.get("duration_months", 0)
+            assessment = f"{sig_icon.get(s.get('signal', 0), '🟡')}  {s.get('status', '—')}"
+            if duration > 1 and s.get("signal", 0) != 1:
+                assessment += f"  ({duration}m)"
             rows.append({
                 "Indicator":  s.get("label", "—"),
                 "Value":      f"{s['value']} {s.get('unit', '')}",
-                "Assessment": f"{sig_icon.get(s.get('signal', 0), '🟡')}  {s.get('status', '—')}",
+                "Assessment": assessment,
             })
         st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
         st.caption("🟢 Normal / Favorable  ·  🟡 Elevated / Watch  ·  🔴 Stress / Warning")

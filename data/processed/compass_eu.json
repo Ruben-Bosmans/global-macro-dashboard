@@ -467,21 +467,24 @@
       "value": 82.3,
       "unit": "bps",
       "status": "Normal",
-      "signal": 1
+      "signal": 1,
+      "duration_months": 18
     },
     "credit_eu_hy_oas": {
       "label": "EU HY Spreads",
-      "value": 2.6,
+      "value": 2.62,
       "unit": "bps",
       "status": "Normal",
-      "signal": 1
+      "signal": 1,
+      "duration_months": 37
     },
     "real_rate_de": {
-      "label": "Reële Rente DE",
+      "label": "Real Rate DE",
       "value": 0.8,
       "unit": "%",
       "status": "Neutral",
-      "signal": 0
+      "signal": 0,
+      "duration_months": 5
     },
     "ecb_euribor_3m": {
       "label": "Euribor 3M",
