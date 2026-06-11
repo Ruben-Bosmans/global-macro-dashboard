@@ -72,6 +72,19 @@ def load_imf_gdp():
         return pd.DataFrame(columns=["Country", "GDP Growth (%)", "Year"])
     return pd.DataFrame(rows).sort_values("GDP Growth (%)", ascending=False)
 
+@st.cache_data(ttl=3600)
+def load_compass(region):
+    """Laad JSON-kompasdata voor een regio (us / eu / global)."""
+    import json
+    path = PROC / f"compass_{region}.json"
+    if not path.exists():
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
 # ── Chart helpers ─────────────────────────────────────────────────
 def plot_line(df, col="value", title="", ylabel="",
               color="#2563EB", start=None, end=None):
@@ -184,6 +197,160 @@ def abs_fmt(v, decimals=2):
         return "—"
     return f"{v:+.{decimals}f}"
 
+def make_quadrant_chart(growth_dir, inflation_dir):
+    """2×2 quadrant visualization with current position marker."""
+    fig = go.Figure()
+
+    # Quadrant backgrounds
+    for x0, y0, x1, y1, color in [
+        (-1,  0,  0,  1, "#DCFCE7"),  # Q1 Goldilocks — green
+        ( 0,  0,  1,  1, "#FEF9C3"),  # Q2 Overheating — yellow
+        ( 0, -1,  1,  0, "#FEE2E2"),  # Q3 Stagflation — red
+        (-1, -1,  0,  0, "#DBEAFE"),  # Q4 Recession — blue
+    ]:
+        fig.add_shape(type="rect", x0=x0, y0=y0, x1=x1, y1=y1,
+                      fillcolor=color, opacity=0.9, line_width=0)
+
+    # Quadrant labels + asset hints
+    for x, y, title, hint in [
+        (-0.5,  0.70, "<b>Q1 — Goldilocks</b>",  "Equities · Corp. Bonds"),
+        ( 0.5,  0.70, "<b>Q2 — Overheating</b>", "Commodities · TIPS · Gold"),
+        ( 0.5, -0.70, "<b>Q3 — Stagflation</b>", "Cash · Gold"),
+        (-0.5, -0.70, "<b>Q4 — Recession</b>",   "Gov. Bonds · Defensive Eq."),
+    ]:
+        fig.add_annotation(x=x, y=y,       text=title, showarrow=False,
+                           font=dict(size=11, color="#374151"), align="center")
+        fig.add_annotation(x=x, y=y - 0.18, text=hint, showarrow=False,
+                           font=dict(size=9,  color="#6B7280"), align="center")
+
+    # Axes
+    fig.add_shape(type="line", x0=-1, y0=0, x1=1, y1=0,
+                  line=dict(color="#9CA3AF", width=1.5))
+    fig.add_shape(type="line", x0=0, y0=-1, x1=0, y1=1,
+                  line=dict(color="#9CA3AF", width=1.5))
+
+    # Axis labels
+    for x, y, txt, xanchor in [
+        (-0.75, -1.15, "← Inflation falling", "center"),
+        ( 0.75, -1.15, "Inflation rising →",  "center"),
+        (-1.20,  0.50, "Growth ↑", "right"),
+        (-1.20, -0.50, "Growth ↓", "right"),
+    ]:
+        fig.add_annotation(x=x, y=y, text=txt, showarrow=False,
+                           font=dict(size=10, color="#6B7280"), xanchor=xanchor)
+
+    # Current position — large black dot with label
+    fig.add_trace(go.Scatter(
+        x=[inflation_dir * 0.5], y=[growth_dir * 0.5],
+        mode="markers+text",
+        text=["  ◀ NOW"],
+        textposition="middle right",
+        textfont=dict(size=12, color="#000000", family="Arial Black"),
+        marker=dict(size=32, color="#000000", symbol="circle",
+                    line=dict(color="white", width=4)),
+        showlegend=False,
+        hovertemplate="Current position<extra></extra>",
+    ))
+
+    fig.update_layout(
+        height=340, plot_bgcolor="white", paper_bgcolor="white",
+        margin=dict(l=65, r=20, t=20, b=55),
+        xaxis=dict(range=[-1.3, 1.3], showgrid=False, zeroline=False, showticklabels=False),
+        yaxis=dict(range=[-1.3, 1.3], showgrid=False, zeroline=False, showticklabels=False,
+                   scaleanchor="x", scaleratio=1),
+    )
+    return fig
+
+
+def render_compass(data):
+    """Render one compass tab from JSON data."""
+    if data is None:
+        st.warning("Compass data not available. Check that compass.py ran correctly.")
+        return
+
+    q   = data["quadrant"]
+    g   = data["growth"]
+    inf = data["inflation"]
+
+    # ── Regime header ──────────────────────────────────────────────
+    q_num     = q["number"]
+    stability = q["stability_months"]
+    stab_txt  = f"{stability} {'month' if stability == 1 else 'months'}"
+    msg = (f"**Quadrant {q_num} — {q['label']}** &nbsp;·&nbsp; "
+           f"{q['description']} &nbsp;·&nbsp; Stability: {stab_txt}")
+
+    if   q_num == 1: st.success(msg)
+    elif q_num == 2: st.warning(msg)
+    elif q_num == 3: st.error(msg)
+    elif q_num == 4: st.info(msg)
+    else:            st.info(f"**Transition** &nbsp;·&nbsp; {q['description']}")
+
+    st.caption(f"Compass calculated: {data.get('timestamp', '—')}")
+
+    # ── Quadrant chart + axis details ──────────────────────────────
+    col_chart, col_axes = st.columns([3, 2])
+
+    with col_chart:
+        st.plotly_chart(make_quadrant_chart(g["direction"], inf["direction"]),
+                        use_container_width=True)
+
+    with col_axes:
+        arrows = {1: "↑ Rising", -1: "↓ Falling", 0: "→ Flat"}
+        st.markdown("##### Growth axis")
+        st.metric(
+            label=g["indicator"],
+            value=f"{g['value']:.2f}" if g.get("value") is not None else "—",
+            delta=arrows[g["direction"]],
+            delta_color="off",
+        )
+        bev = g.get("confirmation", {})
+        if bev.get("value") is not None:
+            bev_arrow = {1: "↑", -1: "↓", 0: "→"}.get(bev.get("direction", 0), "→")
+            st.caption(f"Confirmation — {bev['indicator']}: "
+                       f"{bev_arrow} ({bev['value']:.1f})")
+
+        st.markdown("---")
+        st.markdown("##### Inflation axis")
+        st.metric(
+            label=inf["indicator"],
+            value=f"{inf['value']:.2f}%" if inf.get("value") is not None else "—",
+            delta=arrows[inf["direction"]],
+            delta_color="off",
+        )
+        if inf.get("date"):
+            st.caption(f"Last data point: {str(inf['date'])[:7]}")
+
+    st.markdown("---")
+
+    # ── Asset class compass ────────────────────────────────────────
+    st.subheader("Asset Class Compass")
+    st.caption("Directional guidance based on the active macro regime — not a trading signal.")
+
+    icon = {1: "🟢 Favorable", 0: "🟡 Neutral", -1: "🔴 Unfavorable"}
+    assets = data.get("asset_signals", {})
+    a_cols = st.columns(4)
+    for i, (asset_name, val) in enumerate(assets.items()):
+        with a_cols[i % 4]:
+            st.metric(label=asset_name, value=icon.get(val, "—"))
+
+    st.markdown("---")
+
+    # ── Validation signals ─────────────────────────────────────────
+    st.subheader("Validation Signals")
+    st.caption("Market signals that confirm or contradict the active quadrant.")
+
+    val_signals = data.get("validation", {})
+    if val_signals:
+        sig_icon = {1: "🟢", 0: "🟡", -1: "🔴"}
+        rows = []
+        for s in val_signals.values():
+            rows.append({
+                "Indicator":  s.get("label", "—"),
+                "Value":      f"{s['value']} {s.get('unit', '')}",
+                "Assessment": f"{sig_icon.get(s.get('signal', 0), '🟡')}  {s.get('status', '—')}",
+            })
+        st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+        st.caption("🟢 Normal / Favorable  ·  🟡 Elevated / Watch  ·  🔴 Stress / Warning")
 
 # ── Sidebar ───────────────────────────────────────────────────────
 summary = load_summary()
@@ -198,6 +365,7 @@ page = st.sidebar.radio("Navigate to", [
     "🔥 Inflation",
     "💼 Economy",
     "🔀 Compare",
+    "🧭 Macro Kompas",
 ])
 
 st.sidebar.markdown("---")
@@ -1053,3 +1221,41 @@ elif page == "🔀 Compare":
                 "chg_1m_pct":"1M %","chg_1y_pct":"1Y %","yoy_pct":"YoY %"
             })
             st.dataframe(cmp_tbl, hide_index=True, use_container_width=True)
+
+# ══════════════════════════════════════════════════════════════════
+# PAGE: MACRO COMPASS
+# ══════════════════════════════════════════════════════════════════
+elif page == "🧭 Macro Kompas":
+    st.title("🧭 Macro Compass")
+    st.markdown(
+        "Strategic macro regime detector based on **growth** (OECD CLI) "
+        "and **inflation** (CPI trend). Use this as a monthly compass "
+        "for asset allocation — not as a daily trading signal."
+    )
+
+    tab_us, tab_eu, tab_global = st.tabs(["🇺🇸 US", "🇪🇺 Eurozone", "🌍 Global"])
+
+    with tab_us:
+        render_compass(load_compass("us"))
+
+    with tab_eu:
+        render_compass(load_compass("eu"))
+
+    with tab_global:
+        render_compass(load_compass("global"))
+
+        data_global = load_compass("global")
+        if data_global and "divergence" in data_global:
+            div = data_global["divergence"]
+            st.markdown("---")
+            st.subheader("🔄 US vs Eurozone — Divergence")
+            if div.get("actief"):
+                us_arrow = {1: "↑", -1: "↓", 0: "→"}.get(div.get("us_groei", 0), "→")
+                eu_arrow = {1: "↑", -1: "↓", 0: "→"}.get(div.get("eu_groei", 0), "→")
+                st.warning(
+                    f"**Divergence active** — US growth {us_arrow} vs "
+                    f"EU growth {eu_arrow}. Potential relative value opportunities "
+                    f"between US and European assets."
+                )
+            else:
+                st.success("US and EU moving **in sync** — no significant divergence detected.")

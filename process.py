@@ -217,7 +217,15 @@ MONTHLY_INDEX = {
     "m2_cn":    ("money", "m2", "mrd", "CN", "M2 China"),
     "ecb_m1_ea":("money", "m1", "mrd", "EU", "M1 Eurozone"),
     "ecb_m3_ea":("money", "m3", "mrd", "EU", "M3 Eurozone"),
-    "retail_us":("economy", "retail", "index", "US", "Retail Sales US"),
+    "retail_us":("economy", "retail",                "index", "US", "Retail Sales US"),
+    # Industriële productie (index 2015=100 — YoY% wordt berekend)
+    "ip_us":    ("economy", "industrial_production", "index", "US", "Industrial Production US"),
+    "ip_de":    ("economy", "industrial_production", "index", "DE", "Industrial Production Germany"),
+    "ip_fr":    ("economy", "industrial_production", "index", "FR", "Industrial Production France"),
+    "ip_jp":    ("economy", "industrial_production", "index", "JP", "Industrial Production Japan"),
+    "ip_uk":    ("economy", "industrial_production", "index", "UK", "Industrial Production UK"),
+    "ip_ca":    ("economy", "industrial_production", "index", "CA", "Industrial Production Canada"),
+    "ip_kr":    ("economy", "industrial_production", "index", "KR", "Industrial Production South Korea"),
 }
 
 # ECB wisselkoersen (maandelijks, prijsniveau)
@@ -240,6 +248,32 @@ ECB_FX = {
     "ecb_eur_czk": ("currencies", "eur_pairs", "rate", "EU", "EUR/CZK"),
     "ecb_eur_huf": ("currencies", "eur_pairs", "rate", "EU", "EUR/HUF"),
     "ecb_eur_zar": ("currencies", "eur_pairs", "rate", "EU", "EUR/ZAR"),
+}
+# Maandelijkse OECD Composite Leading Indicators (CLI)
+# Waarden rond 100 = langetermijntrend; richting = het signaal
+MONTHLY_CLI = {
+    "oecd_cli_usa":   ("economy", "leading_indicator", "index", "US",   "CLI United States"),
+    "oecd_cli_deu":   ("economy", "leading_indicator", "index", "DE",   "CLI Germany"),
+    "oecd_cli_fra":   ("economy", "leading_indicator", "index", "FR",   "CLI France"),
+    "oecd_cli_ita":   ("economy", "leading_indicator", "index", "IT",   "CLI Italy"),
+    "oecd_cli_gbr":   ("economy", "leading_indicator", "index", "UK",   "CLI United Kingdom"),
+    "oecd_cli_can":   ("economy", "leading_indicator", "index", "CA",   "CLI Canada"),
+    "oecd_cli_jpn":   ("economy", "leading_indicator", "index", "JP",   "CLI Japan"),
+    "oecd_cli_aus":   ("economy", "leading_indicator", "index", "AU",   "CLI Australia"),
+    "oecd_cli_chn":   ("economy", "leading_indicator", "index", "CN",   "CLI China"),
+    "oecd_cli_ind":   ("economy", "leading_indicator", "index", "IN",   "CLI India"),
+    "oecd_cli_kor":   ("economy", "leading_indicator", "index", "KR",   "CLI South Korea"),
+    "oecd_cli_bra":   ("economy", "leading_indicator", "index", "BR",   "CLI Brazil"),
+    "oecd_cli_mex":   ("economy", "leading_indicator", "index", "MX",   "CLI Mexico"),
+    "oecd_cli_esp":   ("economy", "leading_indicator", "index", "ES",   "CLI Spain"),
+    "oecd_cli_idn":   ("economy", "leading_indicator", "index", "ID",   "CLI Indonesia"),
+    "oecd_cli_tur":   ("economy", "leading_indicator", "index", "TR",   "CLI Turkey"),
+    "oecd_cli_zaf":   ("economy", "leading_indicator", "index", "ZA",   "CLI South Africa"),
+    "oecd_cli_g7":    ("economy", "leading_indicator", "index", "G7",   "CLI G7"),
+    "oecd_cli_g20":   ("economy", "leading_indicator", "index", "G20",  "CLI G20"),
+    "oecd_cli_nafta": ("economy", "leading_indicator", "index", "NAFTA","CLI NAFTA"),
+    "oecd_cli_g4e":   ("economy", "leading_indicator", "index", "EU",   "CLI G4 Europe"),
+    "oecd_cli_a5m":   ("economy", "leading_indicator", "index", "ASIA", "CLI Asia 5 Major"),
 }
 
 # ══════════════════════════════════════════════════════════════════
@@ -365,6 +399,25 @@ def process_monthly_index(name, meta):
     df[numeric_cols] = df[numeric_cols].round(4)
     return df
 
+def process_monthly_cli(name, meta):
+    """
+    OECD Composite Leading Indicator (maandelijks):
+    - Absolute verandering 1m/3m/6m/1y
+    - 100 = langetermijntrend; stijgend boven 100 = expansie
+    - Richting (stijgend/dalend) is het signaal, niet het absolute niveau
+    """
+    df = load(name)
+    if df is None:
+        return None
+
+    df["chg_1m"] = abs_change_offset(df["value"], 1)
+    df["chg_3m"] = abs_change_offset(df["value"], 3)
+    df["chg_6m"] = abs_change_offset(df["value"], 6)
+    df["chg_1y"] = abs_change_offset(df["value"], 12)
+
+    numeric_cols = df.select_dtypes(include="number").columns
+    df[numeric_cols] = df[numeric_cols].round(4)
+    return df
 
 def process_ecb_fx(name, meta):
     """ECB wisselkoersen — zoekt flexibel naar bestandsnaam."""
@@ -580,7 +633,7 @@ def main():
     print(f"{'='*60}\n")
 
     # ── Stap 1: Dagelijkse prijsdata ──────────────────────────────
-    print("  [1/5] Dagelijkse prijsdata (indices, grondstoffen, crypto)...")
+    print("  [1/6] Dagelijkse prijsdata (indices, grondstoffen, crypto)...")
     ok = 0
     for name, meta in DAILY_PRICE.items():
         df = process_daily_price(name, meta)
@@ -591,7 +644,7 @@ def main():
     print(f"        {ok}/{len(DAILY_PRICE)} verwerkt\n")
 
     # ── Stap 2: Dagelijkse % data (credit spreads) ────────────────
-    print("  [2/5] Credit spreads en dagelijkse rentes...")
+    print("  [2/6] Credit spreads en dagelijkse rentes...")
     ok = 0
     for name, meta in DAILY_PCT.items():
         df = process_daily_pct(name, meta)
@@ -602,7 +655,7 @@ def main():
     print(f"        {ok}/{len(DAILY_PCT)} verwerkt\n")
 
     # ── Stap 3: Maandelijkse rentes en werkloosheid ───────────────
-    print("  [3/5] Maandelijkse rentes, werkloosheid, obligaties...")
+    print("  [3/6] Maandelijkse rentes, werkloosheid, obligaties...")
     ok = 0
     for name, meta in {**MONTHLY_RATE, **ECB_FX}.items():
         df = process_monthly_rate(name, meta) if name in MONTHLY_RATE \
@@ -614,8 +667,8 @@ def main():
     total = len(MONTHLY_RATE) + len(ECB_FX)
     print(f"        {ok}/{total} verwerkt\n")
 
-    # ── Stap 4: CPI-indices en geldhoeveelheid ────────────────────
-    print("  [4/5] CPI-indexreeksen en geldhoeveelheid (YoY% berekenen)...")
+    # ── Stap 4: CPI-indices, geldhoeveelheid en industriële productie ─
+    print("  [4/6] CPI-indexreeksen, geldhoeveelheid en industriële productie (YoY% berekenen)...")
     ok = 0
     for name, meta in MONTHLY_INDEX.items():
         df = process_monthly_index(name, meta)
@@ -625,10 +678,19 @@ def main():
             ok += 1
     print(f"        {ok}/{len(MONTHLY_INDEX)} verwerkt\n")
 
-    # ── Stap 5: Afgeleide berekeningen ────────────────────────────
-    print("  [5/5] Afgeleide berekeningen (reële rente, spreads)...")
-    derived = process_derived()
-    processed_catalog.update(derived)
+    # ── Stap 5: OECD Composite Leading Indicators ─────────────────
+    print("  [5/6] OECD Leading Indicators (CLI)...")
+    ok = 0
+    for name, meta in MONTHLY_CLI.items():
+        df = process_monthly_cli(name, meta)
+        if df is not None:
+            save(df, name)
+            processed_catalog[name] = meta
+            ok += 1
+    print(f"        {ok}/{len(MONTHLY_CLI)} verwerkt\n")
+
+    # ── Stap 6: Afgeleide berekeningen ────────────────────────────
+    print("  [6/6] Afgeleide berekeningen (reële rente, spreads)...")
 
     # ── Samenvattingstabel ────────────────────────────────────────
     print(f"\n  Samenvattingstabel bouwen...")
