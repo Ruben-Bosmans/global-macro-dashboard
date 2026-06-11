@@ -1,0 +1,71 @@
+{
+  "region": "Global",
+  "timestamp": "2026-06-11",
+  "growth": {
+    "direction": 1,
+    "direction_label": "Stijgend",
+    "indicator": "OECD CLI G20",
+    "value": 100.65,
+    "change_3m": 0.258,
+    "date": "2026-04-01T00:00:00"
+  },
+  "inflation": {
+    "direction": 0,
+    "direction_label": "Vlak",
+    "indicator": "CPI Gemiddelde G5 YoY%",
+    "value": 1.88,
+    "change_3m": 0.094
+  },
+  "quadrant": {
+    "number": 0,
+    "label": "Transitie",
+    "description": "Geen duidelijk regime",
+    "stability_months": 0
+  },
+  "asset_signals": {
+    "Aandelen (groei)": 0,
+    "Aandelen (defensief)": 0,
+    "Staatsobligaties": 0,
+    "Bedrijfsobligaties": 0,
+    "Grondstoffen": 0,
+    "Goud": 0,
+    "Cash": 0,
+    "Crypto": 0
+  },
+  "validation": {
+    "dxy": {
+      "label": "Dollar Index (DXY)",
+      "value": 100.08,
+      "unit": "idx",
+      "status": "Stabiel",
+      "signal": 0
+    },
+    "gold": {
+      "label": "Goud (USD/oz)",
+      "value": 4114.0,
+      "unit": "USD",
+      "status": "Dalend",
+      "signal": -1
+    },
+    "credit_em_hy_oas": {
+      "label": "EM HY Spreads",
+      "value": 3.0,
+      "unit": "bps",
+      "status": "Normaal",
+      "signal": 1
+    },
+    "vix": {
+      "label": "VIX",
+      "value": 20.6,
+      "unit": "idx",
+      "status": "Verhoogd",
+      "signal": 0
+    }
+  },
+  "divergence": {
+    "actief": false,
+    "us_groei": 1,
+    "eu_groei": 0,
+    "label": "VS en EU synchroon"
+  }
+}

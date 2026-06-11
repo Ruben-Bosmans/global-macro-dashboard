@@ -1,0 +1,65 @@
+{
+  "region": "EU",
+  "timestamp": "2026-06-11",
+  "growth": {
+    "direction": 0,
+    "direction_label": "Vlak",
+    "indicator": "OECD CLI G4 Europa",
+    "value": 100.85,
+    "change_3m": -0.041,
+    "date": "2026-04-01T00:00:00"
+  },
+  "inflation": {
+    "direction": 1,
+    "direction_label": "Stijgend",
+    "indicator": "CPI Gemiddelde DE+FR+IT YoY%",
+    "value": 1.62,
+    "change_3m": 0.085
+  },
+  "quadrant": {
+    "number": 0,
+    "label": "Transitie",
+    "description": "Geen duidelijk regime",
+    "stability_months": 0
+  },
+  "asset_signals": {
+    "Aandelen (groei)": 0,
+    "Aandelen (defensief)": 0,
+    "Staatsobligaties": 0,
+    "Bedrijfsobligaties": 0,
+    "Grondstoffen": 0,
+    "Goud": 0,
+    "Cash": 0,
+    "Crypto": 0
+  },
+  "validation": {
+    "spread_it_de": {
+      "label": "BTP-Bund Spread (IT-DE)",
+      "value": 82.3,
+      "unit": "bps",
+      "status": "Normaal",
+      "signal": 1
+    },
+    "credit_eu_hy_oas": {
+      "label": "EU HY Spreads",
+      "value": 2.6,
+      "unit": "bps",
+      "status": "Normaal",
+      "signal": 1
+    },
+    "real_rate_de": {
+      "label": "Reële Rente DE",
+      "value": 0.8,
+      "unit": "%",
+      "status": "Neutraal",
+      "signal": 0
+    },
+    "ecb_euribor_3m": {
+      "label": "Euribor 3M",
+      "value": 2.226,
+      "unit": "%",
+      "status": "Stijgend",
+      "signal": 0
+    }
+  }
+}

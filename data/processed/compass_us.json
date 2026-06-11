@@ -1,0 +1,78 @@
+{
+  "region": "US",
+  "timestamp": "2026-06-11",
+  "growth": {
+    "direction": 1,
+    "direction_label": "Stijgend",
+    "indicator": "OECD CLI VS",
+    "value": 100.85,
+    "change_3m": 0.392,
+    "date": "2026-04-01T00:00:00",
+    "bevestiging": {
+      "indicator": "Industriële Productie VS",
+      "direction": 1,
+      "value": 102.5
+    }
+  },
+  "inflation": {
+    "direction": 1,
+    "direction_label": "Stijgend",
+    "indicator": "CPI VS YoY%",
+    "value": 4.27,
+    "change_3m": 1.014,
+    "date": "2026-05-01T00:00:00"
+  },
+  "quadrant": {
+    "number": 2,
+    "label": "Oververhitting",
+    "description": "Groei stijgt, inflatie stijgt",
+    "stability_months": 2
+  },
+  "asset_signals": {
+    "Aandelen (groei)": 0,
+    "Aandelen (defensief)": 0,
+    "Staatsobligaties": -1,
+    "Bedrijfsobligaties": 0,
+    "Grondstoffen": 1,
+    "Goud": 1,
+    "Cash": 0,
+    "Crypto": 0
+  },
+  "validation": {
+    "credit_spread_10y_2y": {
+      "label": "Yieldcurve (10J-2J)",
+      "value": 0.42,
+      "unit": "%",
+      "status": "Geïnverteerd",
+      "signal": -1
+    },
+    "credit_us_hy_oas": {
+      "label": "US HY Spreads",
+      "value": 2.78,
+      "unit": "bps",
+      "status": "Normaal",
+      "signal": 1
+    },
+    "credit_us_ig_oas": {
+      "label": "US IG Spreads",
+      "value": 0.75,
+      "unit": "bps",
+      "status": "Normaal",
+      "signal": 1
+    },
+    "vix": {
+      "label": "VIX (marktangst)",
+      "value": 20.63,
+      "unit": "idx",
+      "status": "Verhoogd",
+      "signal": 0
+    },
+    "real_rate_us": {
+      "label": "Reële Rente VS",
+      "value": 0.37,
+      "unit": "%",
+      "status": "Accommodatief",
+      "signal": 1
+    }
+  }
+}
