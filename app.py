@@ -72,7 +72,7 @@ def load_imf_gdp():
         return pd.DataFrame(columns=["Country", "GDP Growth (%)", "Year"])
     return pd.DataFrame(rows).sort_values("GDP Growth (%)", ascending=False)
 
-@st.cache_data(ttl=3600)
+#@st.cache_data(ttl=3600)
 def load_compass(region):
     """Laad JSON-kompasdata voor een regio (us / eu / global)."""
     import json
@@ -261,6 +261,54 @@ def make_quadrant_chart(growth_dir, inflation_dir):
     )
     return fig
 
+def make_history_chart(history):
+    """Colored timeline strip — one bar per month, colored by quadrant."""
+    if not history:
+        return go.Figure()
+
+    q_color = {1: "#16A34A", 2: "#D97706", 3: "#DC2626",
+               4: "#2563EB", 0: "#9CA3AF"}
+    q_label = {1: "Q1 Goldilocks", 2: "Q2 Overheating",
+               3: "Q3 Stagflation", 4: "Q4 Recession", 0: "Transition"}
+
+    dates  = [h["date"]                          for h in history]
+    colors = [q_color[h["quadrant"]]             for h in history]
+    texts  = [q_label[h["quadrant"]]             for h in history]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=dates, y=[1] * len(dates),
+        marker=dict(color=colors, line=dict(width=0.5, color="white")),
+        customdata=texts,
+        hovertemplate="%{x}: %{customdata}<extra></extra>",
+        showlegend=False,
+    ))
+
+    # Legend entries (only for quadrants that actually appear)
+    seen = set()
+    for h in history:
+        q = h["quadrant"]
+        if q not in seen:
+            seen.add(q)
+            fig.add_trace(go.Bar(
+                x=[None], y=[None],
+                marker_color=q_color[q],
+                name=q_label[q],
+                showlegend=True,
+            ))
+
+    fig.update_layout(
+        height=110,
+        margin=dict(l=0, r=0, t=10, b=10),
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        bargap=0.05,
+        yaxis=dict(showticklabels=False, showgrid=False,
+                   zeroline=False, range=[0, 1.1]),
+        xaxis=dict(showgrid=False, tickformat="%b %Y"),
+        legend=dict(orientation="h", yanchor="bottom", y=-1.0, x=0),
+    )
+    return fig
 
 def render_compass(data):
     """Render one compass tab from JSON data."""
@@ -351,6 +399,21 @@ def render_compass(data):
             })
         st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
         st.caption("🟢 Normal / Favorable  ·  🟡 Elevated / Watch  ·  🔴 Stress / Warning")
+
+    # ── Regime history ─────────────────────────────────────────────
+    history = data.get("history", [])
+    if history:
+        st.markdown("---")
+        st.subheader("Regime History — last 5 years")
+        st.caption(
+            "Monthly quadrant assignments based on OECD CLI + CPI trend. "
+            "Use this to validate the compass against known historical periods."
+        )
+        st.plotly_chart(make_history_chart(history), use_container_width=True)
+        st.caption(
+            "Historical reference: 2022 typically Q3 Stagflation · "
+            "2020 Q4 Recession · 2019 / mid-2023 Q1 Goldilocks"
+        )
 
 # ── Sidebar ───────────────────────────────────────────────────────
 summary = load_summary()

@@ -3,75 +3,504 @@
   "timestamp": "2026-06-11",
   "growth": {
     "direction": 1,
-    "direction_label": "Stijgend",
-    "indicator": "OECD CLI VS",
+    "direction_label": "Rising",
+    "indicator": "OECD CLI US",
     "value": 100.85,
     "change_3m": 0.392,
     "date": "2026-04-01T00:00:00",
-    "bevestiging": {
-      "indicator": "Industriële Productie VS",
+    "confirmation": {
+      "indicator": "Industrial Production US",
       "direction": 1,
       "value": 102.5
     }
   },
   "inflation": {
     "direction": 1,
-    "direction_label": "Stijgend",
-    "indicator": "CPI VS YoY%",
+    "direction_label": "Rising",
+    "indicator": "CPI US YoY%",
     "value": 4.27,
     "change_3m": 1.014,
     "date": "2026-05-01T00:00:00"
   },
   "quadrant": {
     "number": 2,
-    "label": "Oververhitting",
-    "description": "Groei stijgt, inflatie stijgt",
+    "label": "Overheating",
+    "description": "Growth rising, inflation rising",
     "stability_months": 2
   },
   "asset_signals": {
-    "Aandelen (groei)": 0,
-    "Aandelen (defensief)": 0,
-    "Staatsobligaties": -1,
-    "Bedrijfsobligaties": 0,
-    "Grondstoffen": 1,
-    "Goud": 1,
+    "Equities (growth)": 0,
+    "Equities (defensive)": 0,
+    "Gov. Bonds": -1,
+    "Corp. Bonds": 0,
+    "Commodities": 1,
+    "Gold": 1,
     "Cash": 0,
     "Crypto": 0
   },
+  "history": [
+    {
+      "date": "2021-04",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-05",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-06",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-07",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-08",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-09",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-10",
+      "quadrant": 3,
+      "label": "Stagflation",
+      "growth_dir": -1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-11",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2021-12",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-01",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-02",
+      "quadrant": 3,
+      "label": "Stagflation",
+      "growth_dir": -1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-03",
+      "quadrant": 3,
+      "label": "Stagflation",
+      "growth_dir": -1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-04",
+      "quadrant": 3,
+      "label": "Stagflation",
+      "growth_dir": -1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-05",
+      "quadrant": 3,
+      "label": "Stagflation",
+      "growth_dir": -1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-06",
+      "quadrant": 3,
+      "label": "Stagflation",
+      "growth_dir": -1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-07",
+      "quadrant": 3,
+      "label": "Stagflation",
+      "growth_dir": -1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2022-08",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": -1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2022-09",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": -1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2022-10",
+      "quadrant": 4,
+      "label": "Recession",
+      "growth_dir": -1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2022-11",
+      "quadrant": 4,
+      "label": "Recession",
+      "growth_dir": -1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2022-12",
+      "quadrant": 4,
+      "label": "Recession",
+      "growth_dir": -1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-01",
+      "quadrant": 4,
+      "label": "Recession",
+      "growth_dir": -1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-02",
+      "quadrant": 4,
+      "label": "Recession",
+      "growth_dir": -1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-03",
+      "quadrant": 4,
+      "label": "Recession",
+      "growth_dir": -1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-04",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-05",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-06",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-07",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-08",
+      "quadrant": 1,
+      "label": "Goldilocks",
+      "growth_dir": 1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-09",
+      "quadrant": 1,
+      "label": "Goldilocks",
+      "growth_dir": 1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2023-10",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2023-11",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2023-12",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2024-01",
+      "quadrant": 1,
+      "label": "Goldilocks",
+      "growth_dir": 1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2024-02",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2024-03",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2024-04",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2024-05",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2024-06",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2024-07",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2024-08",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2024-09",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2024-10",
+      "quadrant": 1,
+      "label": "Goldilocks",
+      "growth_dir": 1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2024-11",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2024-12",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2025-01",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2025-02",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2025-03",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2025-04",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2025-05",
+      "quadrant": 4,
+      "label": "Recession",
+      "growth_dir": -1,
+      "inflation_dir": -1
+    },
+    {
+      "date": "2025-06",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": -1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2025-07",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2025-08",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2025-09",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 0,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2025-10",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2025-11",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2025-12",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2026-01",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2026-02",
+      "quadrant": 0,
+      "label": "Transition",
+      "growth_dir": 1,
+      "inflation_dir": 0
+    },
+    {
+      "date": "2026-03",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    },
+    {
+      "date": "2026-04",
+      "quadrant": 2,
+      "label": "Overheating",
+      "growth_dir": 1,
+      "inflation_dir": 1
+    }
+  ],
   "validation": {
     "credit_spread_10y_2y": {
       "label": "Yieldcurve (10J-2J)",
       "value": 0.42,
       "unit": "%",
-      "status": "Geïnverteerd",
+      "status": "Inverted",
       "signal": -1
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
       "value": 2.78,
       "unit": "bps",
-      "status": "Normaal",
+      "status": "Normal",
       "signal": 1
     },
     "credit_us_ig_oas": {
       "label": "US IG Spreads",
       "value": 0.75,
       "unit": "bps",
-      "status": "Normaal",
+      "status": "Normal",
       "signal": 1
     },
     "vix": {
       "label": "VIX (marktangst)",
       "value": 20.63,
       "unit": "idx",
-      "status": "Verhoogd",
+      "status": "Elevated",
       "signal": 0
     },
     "real_rate_us": {
       "label": "Reële Rente VS",
       "value": 0.37,
       "unit": "%",
-      "status": "Accommodatief",
+      "status": "Accommodative",
       "signal": 1
     }
   }

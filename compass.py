@@ -66,7 +66,7 @@ def get_direction(series, window=3, threshold=0.15):
     return 0, round(delta, 3)
 
 
-def cli_signal(name, window=3, threshold=0.15):
+def cli_signal(name, window=3, threshold=0.08):
     """Groei-as: richting van OECD CLI."""
     df = load(name)
     if df is None:
@@ -75,7 +75,7 @@ def cli_signal(name, window=3, threshold=0.15):
     return direction, delta, round(float(df["value"].iloc[-1]), 2), df["date"].iloc[-1]
 
 
-def cpi_signal(name, window=3, threshold=0.3):
+def cpi_signal(name, window=3, threshold=0.15):
     """Inflatie-as: richting van CPI YoY%-trend."""
     df = load(name)
     if df is None or "yoy_pct" not in df.columns:
@@ -272,6 +272,44 @@ def signals_global():
 # KOMPAS BUILDERS
 # ══════════════════════════════════════════════════════════════════
 
+def build_quadrant_history(cli_name, cpi_name, months_back=60,
+                           window=3, cli_thr=0.15, cpi_thr=0.3):
+    """
+    Calculate the quadrant for each of the past N months.
+    Returns a list of monthly regime assignments for the history chart.
+    """
+    cli_df = load(cli_name)
+    cpi_df = load(cpi_name)
+    if cli_df is None or cpi_df is None:
+        return []
+
+    cpi_df  = cpi_df.dropna(subset=["yoy_pct"]).reset_index(drop=True)
+    min_pts = window * 2
+    history = []
+
+    for mb in range(months_back, -1, -1):
+        end_cli = len(cli_df) - mb if mb > 0 else len(cli_df)
+        end_cpi = len(cpi_df) - mb if mb > 0 else len(cpi_df)
+        if end_cli < min_pts or end_cpi < min_pts:
+            continue
+
+        cli_trim = cli_df.iloc[:end_cli]
+        cpi_trim = cpi_df.iloc[:end_cpi]
+
+        g_dir, _ = get_direction(cli_trim["value"],    window, cli_thr)
+        i_dir, _ = get_direction(cpi_trim["yoy_pct"],  window, cpi_thr)
+        q         = assign_quadrant(g_dir, i_dir)
+
+        history.append({
+            "date":          str(cli_trim["date"].iloc[-1])[:7],
+            "quadrant":      q,
+            "label":         KWADRANT_INFO[q][0],
+            "growth_dir":    g_dir,
+            "inflation_dir": i_dir,
+        })
+
+    return history
+
 def build_us():
     g_dir, g_delta, g_val, g_date = cli_signal("oecd_cli_usa")
     i_dir, i_delta, i_val, i_date = cpi_signal("cpi_us")
@@ -305,6 +343,7 @@ def build_us():
             "stability_months": stab,
         },
         "asset_signals": ASSET_MATRIX[q_num],
+        "history":      build_quadrant_history("oecd_cli_usa", "cpi_us", months_back=60),
         "validation": signals_us(),
     }
 
@@ -336,6 +375,7 @@ def build_eu():
             "stability_months": stab,
         },
         "asset_signals": ASSET_MATRIX[q_num],
+        "history":      build_quadrant_history("oecd_cli_g4e", "cpi_de", months_back=60),
         "validation": signals_eu(),
     }
 
@@ -372,6 +412,7 @@ def build_global():
             "stability_months": 0,
         },
         "asset_signals": ASSET_MATRIX[q_num],
+        "history":      build_quadrant_history("oecd_cli_g20", "cpi_us", months_back=60),
         "validation": signals_global(),
         "divergence": {
             "actief": divergent,
