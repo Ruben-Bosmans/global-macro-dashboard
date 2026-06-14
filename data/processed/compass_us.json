@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-06-13",
+  "timestamp": "2026-06-14",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5672,
+      "value": 0.5704,
       "unit": "ratio",
       "status": "Falling",
       "signal": 1,
