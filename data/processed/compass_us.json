@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-06-19",
+  "timestamp": "2026-06-20",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -494,11 +494,11 @@
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 16.78,
+      "value": 18.44,
       "unit": "idx",
-      "status": "Calm",
-      "signal": 1,
-      "duration_months": 3
+      "status": "Elevated",
+      "signal": 0,
+      "duration_months": 1
     },
     "real_rate_us": {
       "label": "US Real Rate",
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5611,
+      "value": 0.5624,
       "unit": "ratio",
       "status": "Stable",
       "signal": 0,
