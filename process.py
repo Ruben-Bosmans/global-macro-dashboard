@@ -477,6 +477,55 @@ def process_balance_sheet(name, meta):
     monthly[num] = monthly[num].round(4)
     return monthly
 
+def build_current_account_map():
+    """
+    Aggregeert alle IMF current account bestanden naar één
+    overzichtsbestand voor de wereldkaart.
+    """
+    IMF_CA = {
+        "ae": "ARE", "ar": "ARG", "at": "AUT", "au": "AUS",
+        "bd": "BGD", "be": "BEL", "br": "BRA", "ca": "CAN",
+        "ch": "CHE", "cl": "CHL", "cn": "CHN", "co": "COL",
+        "cz": "CZE", "de": "DEU", "dk": "DNK", "eg": "EGY",
+        "es": "ESP", "et": "ETH", "fi": "FIN", "fr": "FRA",
+        "gh": "GHA", "gr": "GRC", "hk": "HKG", "hu": "HUN",
+        "id": "IDN", "ie": "IRL", "il": "ISR", "in": "IND",
+        "it": "ITA", "jp": "JPN", "ke": "KEN", "kr": "KOR",
+        "kw": "KWT", "ma": "MAR", "mx": "MEX", "my": "MYS",
+        "ng2":"NGA", "nl": "NLD", "no": "NOR", "nz": "NZL",
+        "ph": "PHL", "pk": "PAK", "pl": "POL", "pt": "PRT",
+        "qa": "QAT", "ro": "ROU", "ru": "RUS", "sa": "SAU",
+        "se": "SWE", "sg": "SGP", "th": "THA", "tr": "TUR",
+        "tz": "TZA", "ua": "UKR", "uk": "GBR", "us": "USA",
+        "vn": "VNM", "za": "ZAF",
+    }
+    rows = []
+    for code2, iso3 in IMF_CA.items():
+        path = RAW / f"imf_current_account_{code2}.csv"
+        if not path.exists():
+            continue
+        try:
+            df = pd.read_csv(path, parse_dates=["date"]).dropna()
+            df["year"] = df["date"].dt.year
+            df = df[df["year"] <= 2025]
+            if df.empty:
+                continue
+            last = df.sort_values("date").iloc[-1]
+            rows.append({
+                "iso3":  iso3,
+                "value": round(float(last["value"]), 2),
+                "year":  int(last["year"]),
+            })
+        except Exception:
+            continue
+
+    if rows:
+        out = pd.DataFrame(rows)
+        save(out, "current_account_map")
+        print(f"  ✓  current_account_map ({len(out)} landen)")
+    else:
+        print("  !  current_account_map: geen data gevonden")
+
 def process_ecb_fx(name, meta):
     """ECB wisselkoersen — zoekt flexibel naar bestandsnaam."""
     df = None
@@ -747,8 +796,8 @@ def main():
             ok += 1
     print(f"        {ok}/{len(MONTHLY_CLI)} verwerkt\n")
 
-    # ── Stap 6: Centrale bankbalansen ─────────────────────────────
-    print("  [6/7] Centrale bankbalansen...")
+    # ── Stap 6: Centrale bankbalansen + kaartdata ──────────────────
+    print("  [6/7] Centrale bankbalansen + kaartdata...")
     ok = 0
     for name, meta in BALANCE_SHEETS.items():
         df = process_balance_sheet(name, meta)
@@ -756,7 +805,8 @@ def main():
             save(df, name)
             processed_catalog[name] = meta
             ok += 1
-    print(f"        {ok}/{len(BALANCE_SHEETS)} verwerkt\n")
+    build_current_account_map()
+    print(f"        {ok}/{len(BALANCE_SHEETS)} balansen verwerkt\n")
 
     # ── Stap 7: Afgeleide berekeningen ────────────────────────────
     print("  [7/7] Afgeleide berekeningen (reële rente, spreads)...")
