@@ -282,28 +282,14 @@ def load_compass(region):
     
 @st.cache_data(ttl=3600)
 def load_current_account_map():
-    """Laad IMF lopende rekening % BBP voor alle beschikbare landen."""
-    raw = Path("data")
-    rows = []
-    for code2, iso3 in IMF_CA_COUNTRIES.items():
-        path = raw / f"imf_current_account_{code2}.csv"
-        if not path.exists():
-            continue
-        try:
-            df = pd.read_csv(path, parse_dates=["date"]).dropna()
-            df["year"] = df["date"].dt.year
-            df = df[df["year"] <= 2025]
-            if df.empty:
-                continue
-            last = df.sort_values("date").iloc[-1]
-            rows.append({
-                "iso3":    iso3,
-                "value":   round(float(last["value"]), 2),
-                "year":    int(last["year"]),
-            })
-        except Exception:
-            continue
-    return pd.DataFrame(rows) if rows else pd.DataFrame(columns=["iso3", "value", "year"])
+    """Laad voorverwerkte current account kaartdata vanuit data/processed/."""
+    path = PROC / "current_account_map.csv"
+    if not path.exists():
+        return pd.DataFrame(columns=["iso3", "value", "year"])
+    try:
+        return pd.read_csv(path)
+    except Exception:
+        return pd.DataFrame(columns=["iso3", "value", "year"])
 
 # ── Chart helpers ─────────────────────────────────────────────────
 def plot_line(df, col="value", title="", ylabel="",
