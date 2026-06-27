@@ -190,6 +190,21 @@ MONTHLY_RATE = {
     "ecb_yc_2y":    ("rates", "yield_curve", "%", "EU", "ECB Yieldcurve 2Y"),
     "ecb_yc_5y":    ("rates", "yield_curve", "%", "EU", "ECB Yieldcurve 5Y"),
     "ecb_yc_10y":   ("rates", "yield_curve", "%", "EU", "ECB Yieldcurve 10Y"),
+    "rate_au": ("rates", "policy_rate", "%", "AU", "RBA Rate"),
+    "rate_ch": ("rates", "policy_rate", "%", "CH", "SNB Rate"),
+    "rate_se": ("rates", "policy_rate", "%", "SE", "Riksbank Rate"),
+    "rate_no": ("rates", "policy_rate", "%", "NO", "Norges Bank Rate"),
+    "rate_kr": ("rates", "policy_rate", "%", "KR", "BoK Rate"),
+    "rate_mx": ("rates", "policy_rate", "%", "MX", "Banxico Rate"),
+    "rate_id": ("rates", "policy_rate", "%", "ID", "Bank Indonesia Rate"),
+    "rate_tr": ("rates", "policy_rate", "%", "TR", "TCMB Rate"),
+    "rate_pl": ("rates", "policy_rate", "%", "PL", "NBP Rate"),
+    "rate_hu": ("rates", "policy_rate", "%", "HU", "MNB Rate"),
+    "rate_cz": ("rates", "policy_rate", "%", "CZ", "CNB Rate"),
+    "rate_nz": ("rates", "policy_rate", "%", "NZ", "RBNZ Rate"),
+    "rate_hk": ("rates", "policy_rate", "%", "HK", "HKMA Rate"),
+    "rate_il": ("rates", "policy_rate", "%", "IL", "BoI Rate"),
+    "rate_cl": ("rates", "policy_rate", "%", "CL", "BCCh Rate"),
 }
 
 # Maandelijkse data — indexwaarden waaruit YoY% berekend moet worden
@@ -226,6 +241,14 @@ MONTHLY_INDEX = {
     "ip_uk":    ("economy", "industrial_production", "index", "UK", "Industrial Production UK"),
     "ip_ca":    ("economy", "industrial_production", "index", "CA", "Industrial Production Canada"),
     "ip_kr":    ("economy", "industrial_production", "index", "KR", "Industrial Production South Korea"),
+}
+
+# Centrale bankbalansen
+BALANCE_SHEETS = {
+    "bs_fed": ("central_banks", "balance_sheet", "mln_usd", "US", "Fed Total Assets"),
+    "bs_ecb": ("central_banks", "balance_sheet", "mln_eur", "EU", "ECB Total Assets"),
+    "bs_boj": ("central_banks", "balance_sheet", "mln_jpy", "JP", "BoJ Total Assets"),
+    "bs_boe": ("central_banks", "balance_sheet", "mln_gbp", "UK", "BoE Total Assets (hist.)"),
 }
 
 # ECB wisselkoersen (maandelijks, prijsniveau)
@@ -418,6 +441,41 @@ def process_monthly_cli(name, meta):
     numeric_cols = df.select_dtypes(include="number").columns
     df[numeric_cols] = df[numeric_cols].round(4)
     return df
+
+def process_balance_sheet(name, meta):
+    """
+    Centrale bankbalansen (wekelijks / maandelijks / jaarlijks):
+    - Hersample naar maandelijks (einde van de maand)
+    - Berekent YoY%, MoM% en afstand tot all-time piek
+    """
+    df = load(name)
+    if df is None:
+        return None
+    try:
+        monthly = (
+            df.set_index("date")["value"]
+            .resample("ME")
+            .last()
+            .dropna()
+            .reset_index()
+        )
+        monthly.columns = ["date", "value"]
+    except Exception:
+        monthly = df.copy()
+
+    if monthly.empty or len(monthly) < 2:
+        return None
+
+    monthly["yoy_pct"]        = pct_change_offset(monthly["value"], 12)
+    monthly["mom_pct"]        = pct_change_offset(monthly["value"], 1)
+    monthly["chg_1m"]         = abs_change_offset(monthly["value"], 1)
+    monthly["chg_1y"]         = abs_change_offset(monthly["value"], 12)
+    peak                      = monthly["value"].max()
+    monthly["pct_from_peak"]  = ((monthly["value"] / peak) - 1) * 100
+
+    num = monthly.select_dtypes(include="number").columns
+    monthly[num] = monthly[num].round(4)
+    return monthly
 
 def process_ecb_fx(name, meta):
     """ECB wisselkoersen — zoekt flexibel naar bestandsnaam."""
@@ -689,8 +747,19 @@ def main():
             ok += 1
     print(f"        {ok}/{len(MONTHLY_CLI)} verwerkt\n")
 
-    # ── Stap 6: Afgeleide berekeningen ────────────────────────────
-    print("  [6/6] Afgeleide berekeningen (reële rente, spreads)...")
+    # ── Stap 6: Centrale bankbalansen ─────────────────────────────
+    print("  [6/7] Centrale bankbalansen...")
+    ok = 0
+    for name, meta in BALANCE_SHEETS.items():
+        df = process_balance_sheet(name, meta)
+        if df is not None:
+            save(df, name)
+            processed_catalog[name] = meta
+            ok += 1
+    print(f"        {ok}/{len(BALANCE_SHEETS)} verwerkt\n")
+
+    # ── Stap 7: Afgeleide berekeningen ────────────────────────────
+    print("  [7/7] Afgeleide berekeningen (reële rente, spreads)...")
 
     # ── Samenvattingstabel ────────────────────────────────────────
     print(f"\n  Samenvattingstabel bouwen...")

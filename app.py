@@ -19,6 +19,201 @@ COLORS = [
     "#0891B2","#DB2777","#65A30D","#EA580C","#4F46E5",
     "#9333EA","#0D9488","#B45309","#1D4ED8","#BE123C",
 ]
+# ══════════════════════════════════════════════════════════════════
+# CENTRALE BANK MAPPINGS — voor de wereldkaart
+# ══════════════════════════════════════════════════════════════════
+
+COUNTRY_CB = {
+    # Noord-Amerika
+    "USA": ("FED",     "Federal Reserve"),
+    "CAN": ("BOC",     "Bank of Canada"),
+    "MEX": ("BANXICO", "Banco de México"),
+    # Eurozone
+    "AUT": ("ECB", "European Central Bank"),
+    "BEL": ("ECB", "European Central Bank"),
+    "HRV": ("ECB", "European Central Bank"),
+    "CYP": ("ECB", "European Central Bank"),
+    "EST": ("ECB", "European Central Bank"),
+    "FIN": ("ECB", "European Central Bank"),
+    "FRA": ("ECB", "European Central Bank"),
+    "DEU": ("ECB", "European Central Bank"),
+    "GRC": ("ECB", "European Central Bank"),
+    "IRL": ("ECB", "European Central Bank"),
+    "ITA": ("ECB", "European Central Bank"),
+    "LVA": ("ECB", "European Central Bank"),
+    "LTU": ("ECB", "European Central Bank"),
+    "LUX": ("ECB", "European Central Bank"),
+    "MLT": ("ECB", "European Central Bank"),
+    "NLD": ("ECB", "European Central Bank"),
+    "PRT": ("ECB", "European Central Bank"),
+    "SVK": ("ECB", "European Central Bank"),
+    "SVN": ("ECB", "European Central Bank"),
+    "ESP": ("ECB", "European Central Bank"),
+    # Overig Europa
+    "GBR": ("BOE",      "Bank of England"),
+    "CHE": ("SNB",      "Swiss National Bank"),
+    "SWE": ("RIKSBANK", "Riksbank"),
+    "NOR": ("NORGES",   "Norges Bank"),
+    "DNK": ("DNB",      "Danmarks Nationalbank"),
+    "POL": ("NBP",      "Narodowy Bank Polski"),
+    "HUN": ("MNB",      "Magyar Nemzeti Bank"),
+    "CZE": ("CNB",      "Czech National Bank"),
+    "ROU": ("BNR",      "Banca Nationala a Romaniei"),
+    "RUS": ("CBR",      "Bank of Russia"),
+    "TUR": ("TCMB",     "Central Bank of Turkey"),
+    "UKR": ("NBU",      "National Bank of Ukraine"),
+    "ISL": ("CBI",      "Central Bank of Iceland"),
+    # Azië-Pacific
+    "JPN": ("BOJ",  "Bank of Japan"),
+    "CHN": ("PBOC", "People's Bank of China"),
+    "KOR": ("BOK",  "Bank of Korea"),
+    "AUS": ("RBA",  "Reserve Bank of Australia"),
+    "NZL": ("RBNZ", "Reserve Bank of New Zealand"),
+    "IND": ("RBI",  "Reserve Bank of India"),
+    "IDN": ("BI",   "Bank Indonesia"),
+    "SGP": ("MAS",  "Monetary Authority of Singapore"),
+    "HKG": ("HKMA", "Hong Kong Monetary Authority"),
+    "THA": ("BOT",  "Bank of Thailand"),
+    "MYS": ("BNM",  "Bank Negara Malaysia"),
+    "PHL": ("BSP",  "Bangko Sentral ng Pilipinas"),
+    "VNM": ("SBV",  "State Bank of Vietnam"),
+    "BGD": ("BB",   "Bangladesh Bank"),
+    "PAK": ("SBP",  "State Bank of Pakistan"),
+    "TWN": ("CBC",  "Central Bank of the ROC"),
+    # Amerika's
+    "BRA": ("BCB",    "Banco Central do Brasil"),
+    "ARG": ("BCRA",   "Banco Central de Argentina"),
+    "CHL": ("BCCh",   "Banco Central de Chile"),
+    "COL": ("BANREP", "Banco de la Republica"),
+    "PER": ("BCRP",   "Banco Central de Reserva del Peru"),
+    # Midden-Oosten & Afrika
+    "SAU": ("SAMA",   "Saudi Central Bank"),
+    "ARE": ("CBUAE",  "Central Bank of UAE"),
+    "ISR": ("BOI",    "Bank of Israel"),
+    "ZAF": ("SARB",   "SA Reserve Bank"),
+    "NGA": ("CBN",    "Central Bank of Nigeria"),
+    "EGY": ("CBE",    "Central Bank of Egypt"),
+    "KEN": ("CBK",    "Central Bank of Kenya"),
+    "GHA": ("BOG",    "Bank of Ghana"),
+    "ETH": ("NBE",    "National Bank of Ethiopia"),
+    "TZA": ("BOTTZ",  "Bank of Tanzania"),
+    "MAR": ("BAM",    "Bank Al-Maghrib"),
+    "KWT": ("CBK_KW", "Central Bank of Kuwait"),
+    "QAT": ("QCB",    "Qatar Central Bank"),
+}
+
+CB_COLORS = {
+    "FED":     "#1D4ED8", "ECB":     "#6D28D9", "BOE":     "#BE123C",
+    "BOJ":     "#C2410C", "BOC":     "#B45309", "RBA":     "#166534",
+    "RBNZ":    "#15803D", "SNB":     "#DC2626", "RIKSBANK":"#0E7490",
+    "NORGES":  "#155E75", "DNB":     "#1E40AF", "NBP":     "#7C3AED",
+    "MNB":     "#9333EA", "CNB":     "#A855F7", "BNR":     "#C084FC",
+    "CBR":     "#991B1B", "TCMB":    "#7C2D12", "NBU":     "#1E3A8A",
+    "CBI":     "#2563EB", "PBOC":    "#DC2626", "BOK":     "#2563EB",
+    "RBI":     "#EA580C", "BI":      "#0D9488", "MAS":     "#065F46",
+    "HKMA":    "#1E3A5F", "BOT":     "#7C3AED", "BNM":     "#047857",
+    "BSP":     "#1D4ED8", "SBV":     "#BE123C", "BB":      "#064E3B",
+    "SBP":     "#047857", "CBC":     "#BE185D", "BCB":     "#16A34A",
+    "BCRA":    "#92400E", "BCCh":    "#0369A1", "BANREP":  "#CA8A04",
+    "BCRP":    "#0891B2", "BANXICO": "#B45309", "SAMA":    "#065F46",
+    "CBUAE":   "#0369A1", "BOI":     "#1D4ED8", "SARB":    "#7C2D12",
+    "CBN":     "#166534", "CBE":     "#92400E", "CBK":     "#047857",
+    "BOG":     "#B45309", "NBE":     "#064E3B", "BOTTZ":   "#065F46",
+    "BAM":     "#1E40AF", "CBK_KW":  "#4338CA", "QCB":     "#7C3AED",
+    "OTHER":   "#9CA3AF",
+}
+
+CB_RATE_SERIES = {
+    "FED":      ("rate_us",         "FED"),
+    "ECB":      ("ecb_ecb_deposit", "ECB"),
+    "BOE":      ("rate_uk",         "BoE"),
+    "BOJ":      ("rate_jp",         "BoJ"),
+    "BOC":      ("rate_ca",         "BoC"),
+    "RBA":      ("rate_au",         "RBA"),
+    "RBNZ":     ("rate_nz",         "RBNZ"),
+    "SNB":      ("rate_ch",         "SNB"),
+    "RIKSBANK": ("rate_se",         "Riksbank"),
+    "NORGES":   ("rate_no",         "Norges"),
+    "BOK":      ("rate_kr",         "BoK"),
+    "BANXICO":  ("rate_mx",         "Banxico"),
+    "BCB":      ("rate_br",         "BCB"),
+    "RBI":      ("rate_in",         "RBI"),
+    "SARB":     ("rate_za",         "SARB"),
+    "PBOC":     ("rate_cn",         "PBoC"),
+    "TCMB":     ("rate_tr",         "TCMB"),
+    "NBP":      ("rate_pl",         "NBP"),
+    "MNB":      ("rate_hu",         "MNB"),
+    "CNB":      ("rate_cz",         "CNB"),
+    "BI":       ("rate_id",         "BI"),
+    "HKMA":     ("rate_hk",         "HKMA"),
+    "BOI":      ("rate_il",         "BoI"),
+    "BCCh":     ("rate_cl",         "BCCh"),
+}
+
+# Lat/lon voor rate-labels op de kaart
+CB_POSITIONS = {
+    "FED":      (39.5,  -98.0), "ECB":     (50.5,   9.0),
+    "BOE":      (54.5,  -2.5),  "BOJ":     (36.0,  138.0),
+    "BOC":      (60.0,  -96.0), "RBA":     (-25.0, 133.0),
+    "RBNZ":     (-41.5, 173.0), "SNB":     (47.0,    8.5),
+    "RIKSBANK": (62.0,   16.0), "NORGES":  (64.5,   11.0),
+    "PBOC":     (35.0,  103.0), "BOK":     (36.5,  128.0),
+    "RBI":      (20.0,   79.0), "BCB":     (-14.0,  -53.0),
+    "BANXICO":  (23.5, -102.0), "SARB":    (-29.0,   25.0),
+    "CBR":      (61.0,  100.0), "TCMB":    (39.0,   35.0),
+    "BI":       (-5.0,  120.0), "BCCh":    (-35.0,  -71.0),
+    "BOI":      (31.0,   35.0), "SAMA":    (24.0,   45.0),
+}
+
+CB_BS_CONFIG = {
+    "Federal Reserve (Fed)": {
+        "code": "FED", "country": "United States",
+        "bs_series": "bs_fed", "rate_series": "rate_us",
+        "rate_label": "Fed Funds Rate",
+        "display_unit": "Trillions USD", "scale": 1_000_000,
+        "current": True,
+    },
+    "European Central Bank (ECB)": {
+        "code": "ECB", "country": "Eurozone",
+        "bs_series": "bs_ecb", "rate_series": "ecb_ecb_deposit",
+        "rate_label": "ECB Deposit Rate",
+        "display_unit": "Trillions EUR", "scale": 1_000_000,
+        "current": True,
+    },
+    "Bank of Japan (BoJ)": {
+        "code": "BOJ", "country": "Japan",
+        "bs_series": "bs_boj", "rate_series": "rate_jp",
+        "rate_label": "BoJ Policy Rate",
+        "display_unit": "Trillions JPY", "scale": 1_000_000,
+        "current": True,
+    },
+    "Bank of England (BoE)": {
+        "code": "BOE", "country": "United Kingdom",
+        "bs_series": "bs_boe", "rate_series": "rate_uk",
+        "rate_label": "BoE Base Rate",
+        "display_unit": "Billions GBP", "scale": 1_000,
+        "current": False,
+        "note": "Historical balance sheet data only (to 2016). No active FRED series available for BoE.",
+    },
+}
+
+IMF_CA_COUNTRIES = {
+    "ae": "ARE", "ar": "ARG", "at": "AUT", "au": "AUS",
+    "bd": "BGD", "be": "BEL", "br": "BRA", "ca": "CAN",
+    "ch": "CHE", "cl": "CHL", "cn": "CHN", "co": "COL",
+    "cz": "CZE", "de": "DEU", "dk": "DNK", "eg": "EGY",
+    "es": "ESP", "et": "ETH", "fi": "FIN", "fr": "FRA",
+    "gh": "GHA", "gr": "GRC", "hk": "HKG", "hu": "HUN",
+    "id": "IDN", "ie": "IRL", "il": "ISR", "in": "IND",
+    "it": "ITA", "jp": "JPN", "ke": "KEN", "kr": "KOR",
+    "kw": "KWT", "ma": "MAR", "mx": "MEX", "my": "MYS",
+    "ng2":"NGA", "nl": "NLD", "no": "NOR", "nz": "NZL",
+    "ph": "PHL", "pk": "PAK", "pl": "POL", "pt": "PRT",
+    "qa": "QAT", "ro": "ROU", "ru": "RUS", "sa": "SAU",
+    "se": "SWE", "sg": "SGP", "th": "THA", "tr": "TUR",
+    "tz": "TZA", "ua": "UKR", "uk": "GBR", "us": "USA",
+    "vn": "VNM", "za": "ZAF",
+}
 
 # ── Data loading ──────────────────────────────────────────────────
 @st.cache_data(ttl=3600)
@@ -84,6 +279,31 @@ def load_compass(region):
             return json.load(f)
     except Exception:
         return None
+    
+@st.cache_data(ttl=3600)
+def load_current_account_map():
+    """Laad IMF lopende rekening % BBP voor alle beschikbare landen."""
+    raw = Path("data")
+    rows = []
+    for code2, iso3 in IMF_CA_COUNTRIES.items():
+        path = raw / f"imf_current_account_{code2}.csv"
+        if not path.exists():
+            continue
+        try:
+            df = pd.read_csv(path, parse_dates=["date"]).dropna()
+            df["year"] = df["date"].dt.year
+            df = df[df["year"] <= 2025]
+            if df.empty:
+                continue
+            last = df.sort_values("date").iloc[-1]
+            rows.append({
+                "iso3":    iso3,
+                "value":   round(float(last["value"]), 2),
+                "year":    int(last["year"]),
+            })
+        except Exception:
+            continue
+    return pd.DataFrame(rows) if rows else pd.DataFrame(columns=["iso3", "value", "year"])
 
 # ── Chart helpers ─────────────────────────────────────────────────
 def plot_line(df, col="value", title="", ylabel="",
@@ -310,6 +530,306 @@ def make_history_chart(history):
     )
     return fig
 
+def build_monetary_map(summary_df):
+    """Choropleth gekleurd per centrale bank-zone met rentevoet-labels."""
+    all_cbs = sorted(set(v[0] for v in COUNTRY_CB.values()))
+    cb_to_idx = {cb: i for i, cb in enumerate(all_cbs)}
+    n = len(all_cbs)
+
+    locations, z_vals, cb_codes, hover_texts = [], [], [], []
+    for iso3, (cb_code, cb_name) in COUNTRY_CB.items():
+        locations.append(iso3)
+        z_vals.append(cb_to_idx.get(cb_code, 0))
+        cb_codes.append(cb_code)
+        hover_texts.append(f"<b>{iso3}</b><br>{cb_name}")
+
+    colorscale = []
+    for i, cb in enumerate(all_cbs):
+        color = CB_COLORS.get(cb, "#9CA3AF")
+        colorscale.append([i / n, color])
+        colorscale.append([(i + 1) / n, color])
+
+    fig = go.Figure()
+    fig.add_trace(go.Choropleth(
+        locations=locations,
+        z=z_vals,
+        colorscale=colorscale,
+        zmin=0, zmax=n,
+        showscale=False,
+        locationmode="ISO-3",
+        customdata=cb_codes,
+        text=hover_texts,
+        hovertemplate="%{text}<extra></extra>",
+        marker_line_color="white",
+        marker_line_width=0.4,
+    ))
+
+    # Rentevoet-labels
+    for cb_id, (lat, lon) in CB_POSITIONS.items():
+        info = CB_RATE_SERIES.get(cb_id)
+        if info is None:
+            continue
+        series_name, short = info
+        row = summary_df[summary_df["name"] == series_name]
+        if row.empty:
+            continue
+        rate = row.iloc[0].get("last_value")
+        chg  = row.iloc[0].get("chg_1m_abs")
+        if pd.isna(rate):
+            continue
+        arrow = " \u2192"
+        if pd.notna(chg):
+            arrow = " \u2191" if chg > 0.01 else (" \u2193" if chg < -0.01 else " \u2192")
+        fig.add_trace(go.Scattergeo(
+            lat=[lat], lon=[lon], mode="text",
+            text=[f"<b>{short}<br>{rate:.2f}%{arrow}</b>"],
+            textfont=dict(size=8, color="white"),
+            showlegend=False, hoverinfo="skip",
+        ))
+
+    fig.update_layout(
+        geo=dict(
+            showframe=False, showcoastlines=True,
+            coastlinecolor="#CBD5E1", coastlinewidth=0.5,
+            showland=True, landcolor="#F1F5F9",
+            showocean=True, oceancolor="#DBEAFE",
+            showlakes=False, projection_type="natural earth",
+            bgcolor="white",
+        ),
+        margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor="white", height=520,
+    )
+    return fig
+
+
+def build_trade_map(ca_df):
+    """Choropleth van lopende rekening % BBP."""
+    if ca_df.empty:
+        return go.Figure()
+    fig = go.Figure(go.Choropleth(
+        locations=ca_df["iso3"],
+        z=ca_df["value"],
+        colorscale=[
+            [0.0,  "#DC2626"], [0.35, "#FCA5A5"],
+            [0.5,  "#F3F4F6"], [0.65, "#86EFAC"],
+            [1.0,  "#166534"],
+        ],
+        zmid=0, zmin=-15, zmax=15,
+        locationmode="ISO-3",
+        colorbar=dict(
+            title=dict(text="Current Account<br>% of GDP", side="right"),
+            ticksuffix="%", len=0.7,
+        ),
+        hovertemplate=(
+            "<b>%{location}</b><br>"
+            "Current Account: %{z:.1f}% of GDP<extra></extra>"
+        ),
+        marker_line_color="white", marker_line_width=0.4,
+    ))
+    fig.update_layout(
+        geo=dict(
+            showframe=False, showcoastlines=True,
+            coastlinecolor="#CBD5E1", coastlinewidth=0.5,
+            showland=True, landcolor="#F1F5F9",
+            showocean=True, oceancolor="#DBEAFE",
+            showlakes=False, projection_type="natural earth",
+            bgcolor="white",
+        ),
+        margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor="white", height=520,
+    )
+    return fig
+
+
+def render_map_detail(iso3, summary_df, ca_df):
+    """Rechterpaneel na klikken op een land."""
+    if iso3 is None:
+        st.markdown("### 👆 Click a country")
+        st.caption("Select any country on the map to see its monetary and economic details.")
+        return
+
+    cb_info = COUNTRY_CB.get(iso3)
+    if cb_info is None:
+        st.markdown(f"### {iso3}")
+        st.caption("No central bank data mapped for this country.")
+        return
+
+    cb_code, cb_full_name = cb_info
+    cb_color = CB_COLORS.get(cb_code, "#9CA3AF")
+
+    st.markdown(f"### {iso3}")
+    st.markdown(
+        f'<div style="background:{cb_color};color:white;padding:5px 12px;'
+        f'border-radius:6px;display:inline-block;font-size:13px;'
+        f'font-weight:bold;margin-bottom:8px;">{cb_code}</div>',
+        unsafe_allow_html=True,
+    )
+    st.caption(cb_full_name)
+    st.markdown("---")
+
+    # Rentevoet
+    rate_info = CB_RATE_SERIES.get(cb_code)
+    if rate_info:
+        series_name, rate_label = rate_info
+        row = summary_df[summary_df["name"] == series_name]
+        if not row.empty:
+            rate_val = row.iloc[0].get("last_value")
+            chg      = row.iloc[0].get("chg_1m_abs")
+            arrow    = " \u2192"
+            if pd.notna(chg):
+                arrow = " \u2191" if chg > 0.01 else (" \u2193" if chg < -0.01 else " \u2192")
+            st.metric(
+                label=f"Policy Rate ({rate_label})",
+                value=f"{rate_val:.2f}%{arrow}" if pd.notna(rate_val) else "—",
+                delta=f"{chg*100:+.0f} bps vs last month" if pd.notna(chg) else None,
+            )
+
+    # Balans centrale bank
+    bs_cfg = next(
+        (cfg for cfg in CB_BS_CONFIG.values() if cfg["code"] == cb_code),
+        None
+    )
+    if bs_cfg:
+        bs_df = load_series(bs_cfg["bs_series"])
+        if bs_df is not None and not bs_df.empty:
+            scale = bs_cfg["scale"]
+            last  = bs_df.iloc[-1]
+            val   = float(last["value"]) / scale
+            yoy   = last.get("yoy_pct")
+            peak_pct = last.get("pct_from_peak")
+            st.metric(
+                label=f"Balance Sheet ({bs_cfg['display_unit']})",
+                value=f"{val:,.2f}",
+                delta=f"{yoy:+.1f}% YoY" if pd.notna(yoy) else None,
+            )
+            if pd.notna(peak_pct) and peak_pct < -0.5:
+                st.caption(f"📉 {peak_pct:.1f}% below all-time peak")
+            if not bs_cfg.get("current", True):
+                st.caption("⚠️ Historical data only (to 2016)")
+
+    st.markdown("---")
+
+    # Lopende rekening
+    if not ca_df.empty:
+        ca_row = ca_df[ca_df["iso3"] == iso3]
+        if not ca_row.empty:
+            ca_val  = ca_row.iloc[0]["value"]
+            ca_year = int(ca_row.iloc[0]["year"])
+            icon    = "🟢" if ca_val >= 0 else "🔴"
+            label   = "Surplus" if ca_val >= 0 else "Deficit"
+            st.metric(
+                label=f"Current Account % GDP ({ca_year})",
+                value=f"{ca_val:+.1f}%",
+                delta=f"{icon} {label}",
+                delta_color="off",
+            )
+
+
+def render_cb_balance_tab(cb_name, config, start_dt, end_dt):
+    """Balansblad en rentevoet voor één centrale bank."""
+    if not config.get("current", True):
+        st.warning(config.get("note", "Limited data available."))
+
+    bs_df   = load_series(config["bs_series"])
+    rate_df = load_series(config["rate_series"])
+
+    if bs_df is None or bs_df.empty:
+        st.info(
+            f"Balance sheet data for {cb_name} not yet available. "
+            "Run `python collectors/bs_collector.py` then `python process.py`."
+        )
+        return
+
+    scale = config["scale"]
+    bs_disp = bs_df.copy()
+    bs_disp["value"] = bs_disp["value"] / scale
+
+    last      = bs_df.iloc[-1]
+    current   = float(last["value"]) / scale
+    yoy       = last.get("yoy_pct")
+    peak_pct  = last.get("pct_from_peak")
+    peak_idx  = bs_df["value"].idxmax()
+    peak_val  = float(bs_df.loc[peak_idx, "value"]) / scale
+    peak_date = bs_df.loc[peak_idx, "date"]
+
+    rate_val   = float(rate_df["value"].iloc[-1])  if rate_df is not None else None
+    rate_chg   = float(rate_df["chg_1m"].iloc[-1]) if (rate_df is not None and "chg_1m" in rate_df.columns) else None
+    rate_arrow = " \u2192"
+    if rate_chg is not None:
+        rate_arrow = " \u2191" if rate_chg > 0.01 else (" \u2193" if rate_chg < -0.01 else " \u2192")
+
+    # Metrickaarten
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.metric(
+            config["rate_label"],
+            f"{rate_val:.2f}%{rate_arrow}" if rate_val is not None else "—",
+            delta=f"{rate_chg*100:+.0f} bps vs last month" if rate_chg is not None else None,
+        )
+    with c2:
+        st.metric(
+            f"Balance Sheet ({config['display_unit']})",
+            f"{current:,.2f}",
+            delta=f"{yoy:+.1f}% YoY" if pd.notna(yoy) else None,
+        )
+    with c3:
+        st.metric(
+            "All-Time Peak",
+            f"{peak_val:,.2f}",
+            delta=peak_date.strftime("%b %Y"),
+            delta_color="off",
+        )
+    with c4:
+        st.metric(
+            "vs. Peak",
+            f"{peak_pct:+.1f}%" if pd.notna(peak_pct) else "—",
+            delta_color="off",
+        )
+
+    st.markdown("---")
+
+    # Grafieken
+    col_bs, col_rate = st.columns(2)
+    with col_bs:
+        fig = plot_line(
+            bs_disp,
+            title=f"Balance Sheet ({config['display_unit']})",
+            ylabel=config["display_unit"],
+            color="#2563EB",
+            start=start_dt, end=end_dt,
+        )
+        st.plotly_chart(fig, use_container_width=True)
+    with col_rate:
+        if rate_df is not None:
+            fig = plot_line(
+                rate_df,
+                title=f"{config['rate_label']} (%)",
+                ylabel="%",
+                color="#DC2626",
+                start=start_dt, end=end_dt,
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("Rate data not available.")
+
+    # YoY-verandering grafiek
+    if "yoy_pct" in bs_df.columns:
+        yoy_df = (bs_df[["date", "yoy_pct"]]
+                  .dropna()
+                  .rename(columns={"yoy_pct": "value"}))
+        if start_dt:
+            yoy_df = yoy_df[yoy_df["date"] >= pd.Timestamp(start_dt)]
+        if not yoy_df.empty:
+            st.markdown("---")
+            fig2 = plot_line(
+                yoy_df,
+                title="Balance Sheet — Year-on-Year Change (%)",
+                ylabel="%",
+                color="#7C3AED",
+            )
+            fig2.add_hline(y=0, line_dash="dash", line_color="#9CA3AF")
+            st.plotly_chart(fig2, use_container_width=True)
+
 def render_compass(data):
     """Render one compass tab from JSON data."""
     if data is None:
@@ -432,7 +952,9 @@ page = st.sidebar.radio("Navigate to", [
     "🔥 Inflation",
     "💼 Economy",
     "🔀 Compare",
-    "🧭 Macro Kompas",
+    "🧭 Macro Compass",
+    "🏛️ Central Banks",
+    "🗺️ World Map",
 ])
 
 st.sidebar.markdown("---")
@@ -1326,3 +1848,74 @@ elif page == "🧭 Macro Kompas":
                 )
             else:
                 st.success("US and EU moving **in sync** — no significant divergence detected.")
+
+# ══════════════════════════════════════════════════════════════════
+# PAGE: CENTRAL BANKS
+# ══════════════════════════════════════════════════════════════════
+elif page == "🏛️ Central Banks":
+    st.title("🏛️ Central Banks — Balance Sheets & Policy Rates")
+    st.markdown(
+        "Balance sheet evolution and policy rates for the four major central banks. "
+        "Select a tab to switch institution."
+    )
+    tabs = st.tabs(list(CB_BS_CONFIG.keys()))
+    for tab, (cb_name, config) in zip(tabs, CB_BS_CONFIG.items()):
+        with tab:
+            render_cb_balance_tab(cb_name, config, start_dt, end_dt)
+
+
+# ══════════════════════════════════════════════════════════════════
+# PAGE: WORLD MAP
+# ══════════════════════════════════════════════════════════════════
+elif page == "🗺️ World Map":
+    st.title("🗺️ World Map")
+
+    map_mode = st.selectbox(
+        "Map view",
+        ["🏦 Monetary Policy — CB Zones & Rates", "📊 Current Account % GDP"],
+    )
+
+    if "map_country" not in st.session_state:
+        st.session_state["map_country"] = None
+
+    ca_df = load_current_account_map()
+
+    col_map, col_panel = st.columns([7, 3])
+
+    with col_map:
+        if "Monetary" in map_mode:
+            fig = build_monetary_map(summary)
+            st.caption(
+                "Colored by central bank zone. Labels show current policy rate + direction. "
+                "Click any country to see details."
+            )
+        else:
+            fig = build_trade_map(ca_df)
+            st.caption(
+                "Current account as % of GDP (IMF, most recent year ≤ 2025). "
+                "🟢 Green = surplus / capital exporter  ·  🔴 Red = deficit / capital importer."
+            )
+
+        try:
+            event = st.plotly_chart(
+                fig,
+                on_select="rerun",
+                key=f"wm_{map_mode[:5]}",
+                use_container_width=True,
+            )
+            if event and event.selection and event.selection.points:
+                for pt in event.selection.points:
+                    loc = pt.get("location")
+                    if loc and len(loc) == 3:
+                        st.session_state["map_country"] = loc
+                        break
+        except (TypeError, AttributeError):
+            st.plotly_chart(fig, use_container_width=True)
+            st.caption("_Tip: upgrade Streamlit for click-to-select functionality._")
+
+    with col_panel:
+        render_map_detail(
+            st.session_state.get("map_country"),
+            summary,
+            ca_df,
+        )
