@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-06-26",
+  "timestamp": "2026-06-27",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -478,7 +478,7 @@
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
-      "value": 2.76,
+      "value": 2.78,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -486,7 +486,7 @@
     },
     "credit_us_ig_oas": {
       "label": "US IG Spreads",
-      "value": 0.75,
+      "value": 0.76,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5487,
+      "value": 0.5544,
       "unit": "ratio",
       "status": "Stable",
       "signal": 0,
