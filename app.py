@@ -291,6 +291,18 @@ def load_current_account_map():
     except Exception:
         return pd.DataFrame(columns=["iso3", "value", "year"])
 
+@st.cache_data(ttl=3600)
+def load_yieldcurve(region="us"):
+    """Laad yield curve geschiedenis (breed formaat: date + looptijden)."""
+    path = PROC / f"yieldcurve_{region}.csv"
+    if not path.exists():
+        return None
+    try:
+        df = pd.read_csv(path, parse_dates=["date"])
+        return df.sort_values("date").reset_index(drop=True)
+    except Exception:
+        return None
+
 # ── Chart helpers ─────────────────────────────────────────────────
 def plot_line(df, col="value", title="", ylabel="",
               color="#2563EB", start=None, end=None):
@@ -626,6 +638,196 @@ def build_trade_map(ca_df):
     )
     return fig
 
+def build_yieldcurve_compare(yc_df, compare_date, region="us"):
+    """Statische vergelijking: huidige curve + historische curve."""
+    if region == "us":
+        mats    = [1/12, 3/12, 6/12, 1, 2, 3, 5, 7, 10, 20, 30]
+        labels  = ["1M","3M","6M","1Y","2Y","3Y","5Y","7Y","10Y","20Y","30Y"]
+        cols    = ["m1","m3","m6","y1","y2","y3","y5","y7","y10","y20","y30"]
+    else:
+        mats    = [2, 5, 10]
+        labels  = ["2Y","5Y","10Y"]
+        cols    = ["y2","y5","y10"]
+
+    fig = go.Figure()
+
+    # Huidige curve
+    last = yc_df.iloc[-1]
+    cx = [mats[i] for i, c in enumerate(cols) if pd.notna(last.get(c))]
+    cy = [last[c]  for c in cols              if pd.notna(last.get(c))]
+    last_date = str(last["date"])[:7]
+    is_inv  = (region == "us"
+               and pd.notna(last.get("y2")) and pd.notna(last.get("y10"))
+               and last["y2"] > last["y10"])
+    cur_col = "#DC2626" if is_inv else "#2563EB"
+
+    fig.add_trace(go.Scatter(
+        x=cx, y=cy, mode="lines+markers",
+        name=f"Current  ({last_date})",
+        line=dict(color=cur_col, width=3),
+        marker=dict(size=9, color=cur_col),
+        fill="tozeroy",
+        fillcolor=f"rgba({'220,38,38' if is_inv else '37,99,235'},0.08)",
+    ))
+
+    # Historische vergelijkingscurve
+    if compare_date:
+        mask = yc_df["date"].dt.to_period("M").astype(str) == compare_date
+        if mask.any():
+            hist = yc_df[mask].iloc[0]
+            hx = [mats[i] for i, c in enumerate(cols) if pd.notna(hist.get(c))]
+            hy = [hist[c]  for c in cols              if pd.notna(hist.get(c))]
+            fig.add_trace(go.Scatter(
+                x=hx, y=hy, mode="lines+markers",
+                name=f"Historical  ({compare_date})",
+                line=dict(color="#9CA3AF", width=2, dash="dash"),
+                marker=dict(size=7, color="#9CA3AF"),
+            ))
+
+    if is_inv:
+        fig.add_annotation(
+            text="⚠️ Inverted yield curve",
+            xref="paper", yref="paper", x=0.98, y=0.98,
+            showarrow=False,
+            font=dict(size=12, color="#DC2626"),
+            bgcolor="rgba(254,242,242,0.85)",
+            bordercolor="#DC2626", borderwidth=1, borderpad=6,
+        )
+
+    fig.update_layout(
+        xaxis=dict(
+            title="Maturity", tickmode="array",
+            tickvals=mats, ticktext=labels,
+            showgrid=True, gridcolor="#F0F0F0",
+        ),
+        yaxis=dict(title="Yield (%)", showgrid=True, gridcolor="#F0F0F0"),
+        hovermode="x unified",
+        plot_bgcolor="white", paper_bgcolor="white",
+        margin=dict(l=0, r=0, t=30, b=0),
+        height=420,
+        legend=dict(orientation="h", yanchor="bottom", y=-0.22),
+    )
+    return fig
+
+
+def build_yieldcurve_animated(yc_df, region="us"):
+    """Geanimeerde yield curve met play-knop en tijdslider."""
+    if region == "us":
+        mats   = [1/12, 3/12, 6/12, 1, 2, 3, 5, 7, 10, 20, 30]
+        labels = ["1M","3M","6M","1Y","2Y","3Y","5Y","7Y","10Y","20Y","30Y"]
+        cols   = ["m1","m3","m6","y1","y2","y3","y5","y7","y10","y20","y30"]
+        title  = "US Treasury Yield Curve"
+    else:
+        mats   = [2, 5, 10]
+        labels = ["2Y","5Y","10Y"]
+        cols   = ["y2","y5","y10"]
+        title  = "Eurozone Yield Curve (ECB)"
+
+    # Maximaal 60 maanden (5 jaar) voor performantie
+    yc_df = yc_df.tail(60).reset_index(drop=True)
+
+    def inv(row):
+        return (region == "us"
+                and pd.notna(row.get("y2")) and pd.notna(row.get("y10"))
+                and row["y2"] > row["y10"])
+
+    frames = []
+    for _, row in yc_df.iterrows():
+        x = [mats[i] for i, c in enumerate(cols) if pd.notna(row.get(c))]
+        y = [row[c]   for c in cols              if pd.notna(row.get(c))]
+        d = str(row["date"])[:7]
+        col = "#DC2626" if inv(row) else "#2563EB"
+        frames.append(go.Frame(
+            data=[go.Scatter(
+                x=x, y=y, mode="lines+markers",
+                line=dict(color=col, width=3),
+                marker=dict(size=8, color=col),
+                fill="tozeroy",
+                fillcolor=f"rgba({'220,38,38' if inv(row) else '37,99,235'},0.1)",
+            )],
+            name=d,
+            layout=go.Layout(title_text=f"{title}  —  {d}"),
+        ))
+
+    last    = yc_df.iloc[-1]
+    ix      = [mats[i] for i, c in enumerate(cols) if pd.notna(last.get(c))]
+    iy      = [last[c]  for c in cols              if pd.notna(last.get(c))]
+    ic      = "#DC2626" if inv(last) else "#2563EB"
+
+    fig = go.Figure(
+        data=[go.Scatter(
+            x=ix, y=iy, mode="lines+markers",
+            name="Yield Curve",
+            line=dict(color=ic, width=3),
+            marker=dict(size=8, color=ic),
+            fill="tozeroy",
+            fillcolor=f"rgba({'220,38,38' if inv(last) else '37,99,235'},0.1)",
+        )],
+        frames=frames,
+        layout=go.Layout(title_text=f"{title}  —  {str(last['date'])[:7]}"),
+    )
+
+    fig.update_layout(
+        updatemenus=[{
+            "type": "buttons", "showactive": False,
+            "y": 1.18, "x": 0.0, "xanchor": "left",
+            "buttons": [
+                {
+                    "label": "▶  Play",
+                    "method": "animate",
+                    "args": [None, {
+                        "frame": {"duration": 250, "redraw": True},
+                        "fromcurrent": True,
+                        "transition": {"duration": 150, "easing": "cubic-in-out"},
+                    }],
+                },
+                {
+                    "label": "⏸  Pause",
+                    "method": "animate",
+                    "args": [[None], {
+                        "frame": {"duration": 0, "redraw": False},
+                        "mode": "immediate",
+                        "transition": {"duration": 0},
+                    }],
+                },
+            ],
+        }],
+        sliders=[{
+            "active":       len(frames) - 1,
+            "currentvalue": {"prefix": "📅  ", "font": {"size": 13}},
+            "pad":          {"t": 65, "b": 10},
+            "len":          0.9, "x": 0.05,
+            "steps": [
+                {
+                    "args": [[f.name], {
+                        "frame": {"duration": 250, "redraw": True},
+                        "mode": "immediate",
+                        "transition": {"duration": 150},
+                    }],
+                    "label": f.name,
+                    "method": "animate",
+                }
+                for f in frames
+            ],
+        }],
+        xaxis=dict(
+            title="Maturity", tickmode="array",
+            tickvals=mats, ticktext=labels,
+            showgrid=True, gridcolor="#F0F0F0",
+            range=[-0.3, mats[-1] * 1.04],
+        ),
+        yaxis=dict(
+            title="Yield (%)",
+            showgrid=True, gridcolor="#F0F0F0",
+            rangemode="tozero",
+        ),
+        hovermode="x unified",
+        plot_bgcolor="white", paper_bgcolor="white",
+        margin=dict(l=0, r=0, t=80, b=110),
+        height=520,
+        showlegend=False,
+    )
+    return fig
 
 def render_map_detail(iso3, summary_df, ca_df):
     """Rechterpaneel na klikken op een land."""
@@ -1284,8 +1486,8 @@ elif page == "📈 Markets":
 elif page == "🏦 Rates & Bonds":
     st.title("🏦 Rates & Bonds")
 
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "🏛️ Policy Rates","📜 Bond Yields","📐 Yield Curves","💳 Credit Spreads"
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "🏛️ Policy Rates","📜 Bond Yields","📐 Yield Curves","💳 Credit Spreads","🌊 Curve Shape"
     ])
 
     # ── POLICY RATES ──────────────────────────────────────────────
@@ -1521,6 +1723,62 @@ elif page == "🏦 Rates & Bonds":
                               start=start_dt, end=end_dt)
                 st.plotly_chart(fig, use_container_width=True)
 
+    # ── CURVE SHAPE ───────────────────────────────────────────────
+    with tab5:
+        st.subheader("Yield Curve Shape & History")
+
+        region_sel = st.radio(
+            "Region",
+            ["🇺🇸 United States", "🇪🇺 Eurozone"],
+            horizontal=True,
+        )
+        region_key = "us" if "United" in region_sel else "eu"
+        yc_df = load_yieldcurve(region_key)
+
+        if yc_df is None or yc_df.empty:
+            st.info(
+                "Yield curve data not yet available. "
+                "Run `python collectors/yieldcurve_collector.py` "
+                "then `python process.py`."
+            )
+        else:
+            view = st.radio(
+                "Mode",
+                ["📊 Compare two dates", "🎬 Animated history"],
+                horizontal=True,
+            )
+
+            if "Compare" in view:
+                available = yc_df["date"].dt.to_period("M").astype(str).tolist()
+                default_back = min(12, len(available) - 2)
+                compare = st.selectbox(
+                    "Compare current curve with:",
+                    options=available[:-1],
+                    index=len(available) - 1 - default_back,
+                )
+                st.plotly_chart(
+                    build_yieldcurve_compare(yc_df, compare, region=region_key),
+                    use_container_width=True,
+                )
+                st.caption(
+                    "Blue = current  ·  Gray dashed = historical comparison  ·  "
+                    "Red = inverted (short-term rates exceed long-term rates)"
+                )
+            else:
+                st.caption(
+                    "Press ▶ Play to animate through the last 5 years.  "
+                    "🔵 Blue = normal curve  ·  🔴 Red = inverted curve"
+                )
+                st.plotly_chart(
+                    build_yieldcurve_animated(yc_df, region=region_key),
+                    use_container_width=True,
+                )
+
+        st.markdown("---")
+        st.caption(
+            "US: 11 maturities (1M → 30Y), FRED daily series resampled to monthly.  "
+            "EU: 3 maturities (2Y, 5Y, 10Y), ECB Svensson model."
+        )
 
 # ══════════════════════════════════════════════════════════════════
 # PAGE: INFLATION

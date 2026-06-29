@@ -526,6 +526,57 @@ def build_current_account_map():
     else:
         print("  !  current_account_map: geen data gevonden")
 
+def build_yieldcurve_history():
+    """
+    Bouwt brede yield curve CSV-bestanden:
+    - yieldcurve_us.csv  (11 looptijden, maandelijks)
+    - yieldcurve_eu.csv  (3 looptijden ECB Svensson, maandelijks)
+    """
+    # ── VS: laad uit data/ ────────────────────────────────────────
+    US_COLS = {
+        "m1":"yc_us_1m", "m3":"yc_us_3m",  "m6":"yc_us_6m",
+        "y1":"yc_us_1y", "y2":"yc_us_2y",  "y3":"yc_us_3y",
+        "y5":"yc_us_5y", "y7":"yc_us_7y",  "y10":"yc_us_10y",
+        "y20":"yc_us_20y","y30":"yc_us_30y",
+    }
+    merged_us = None
+    ok_us = 0
+    for col, name in US_COLS.items():
+        df = load(name)
+        if df is None:
+            continue
+        monthly = (df.set_index("date")["value"]
+                   .resample("ME").last().dropna().reset_index())
+        monthly.columns = ["date", col]
+        merged_us = monthly if merged_us is None else pd.merge(merged_us, monthly, on="date", how="outer")
+        ok_us += 1
+    if merged_us is not None:
+        merged_us = merged_us.sort_values("date").reset_index(drop=True)
+        merged_us.to_csv(PROC / "yieldcurve_us.csv", index=False)
+        print(f"  ✓  yieldcurve_us: {len(merged_us)} maanden, {ok_us}/11 looptijden")
+
+    # ── EU: laad uit data/processed/ ─────────────────────────────
+    EU_COLS = {"y2":"ecb_yc_2y", "y5":"ecb_yc_5y", "y10":"ecb_yc_10y"}
+    merged_eu = None
+    ok_eu = 0
+    for col, name in EU_COLS.items():
+        path = PROC / f"{name}.csv"
+        if not path.exists():
+            continue
+        try:
+            df = pd.read_csv(path, parse_dates=["date"]).sort_values("date").dropna(subset=["value"])
+            monthly = (df.set_index("date")["value"]
+                       .resample("ME").last().dropna().reset_index())
+            monthly.columns = ["date", col]
+            merged_eu = monthly if merged_eu is None else pd.merge(merged_eu, monthly, on="date", how="outer")
+            ok_eu += 1
+        except Exception:
+            continue
+    if merged_eu is not None:
+        merged_eu = merged_eu.sort_values("date").reset_index(drop=True)
+        merged_eu.to_csv(PROC / "yieldcurve_eu.csv", index=False)
+        print(f"  ✓  yieldcurve_eu: {len(merged_eu)} maanden, {ok_eu}/3 looptijden")
+
 def process_ecb_fx(name, meta):
     """ECB wisselkoersen — zoekt flexibel naar bestandsnaam."""
     df = None
@@ -806,6 +857,7 @@ def main():
             processed_catalog[name] = meta
             ok += 1
     build_current_account_map()
+    build_yieldcurve_history()
     print(f"        {ok}/{len(BALANCE_SHEETS)} balansen verwerkt\n")
 
     # ── Stap 7: Afgeleide berekeningen ────────────────────────────

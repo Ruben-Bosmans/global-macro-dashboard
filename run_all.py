@@ -23,6 +23,7 @@ COLLECTORS = [
     ("OECD",               "collectors/oecd_collector.py"),
     ("IMF",                "collectors/imf_collector.py"),
     ("Balance Sheets",     "collectors/bs_collector.py"),
+    ("Yield Curves",       "collectors/yieldcurve_collector.py"),
     ("Processor",          "process.py"),
     ("Compass",            "compass.py"),
     ("Push to GitHub",     "push_data.py"),
