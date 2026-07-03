@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-07-01",
+  "timestamp": "2026-07-03",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -470,19 +470,19 @@
   "validation": {
     "credit_spread_10y_2y": {
       "label": "Yield Curve (10Y-2Y)",
-      "value": 0.3,
+      "value": 0.35,
       "unit": "%",
       "status": "Inverted",
       "signal": -1,
-      "duration_months": 19
+      "duration_months": 20
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
-      "value": 2.8,
+      "value": 2.74,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
-      "duration_months": 36
+      "duration_months": 37
     },
     "credit_us_ig_oas": {
       "label": "US IG Spreads",
@@ -490,15 +490,15 @@
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
-      "duration_months": 36
+      "duration_months": 37
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 16.45,
+      "value": 16.15,
       "unit": "idx",
       "status": "Calm",
       "signal": 1,
-      "duration_months": 3
+      "duration_months": 4
     },
     "real_rate_us": {
       "label": "US Real Rate",
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5314,
+      "value": 0.5585,
       "unit": "ratio",
       "status": "Stable",
       "signal": 0,

@@ -1,6 +1,6 @@
 {
   "region": "EU",
-  "timestamp": "2026-07-01",
+  "timestamp": "2026-07-03",
   "growth": {
     "direction": 0,
     "direction_label": "Flat",
@@ -472,11 +472,11 @@
     },
     "credit_eu_hy_oas": {
       "label": "EU HY Spreads",
-      "value": 2.65,
+      "value": 2.71,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
-      "duration_months": 36
+      "duration_months": 37
     },
     "real_rate_de": {
       "label": "Real Rate DE",
@@ -488,7 +488,7 @@
     },
     "ecb_euribor_3m": {
       "label": "Euribor 3M",
-      "value": 2.226,
+      "value": 2.339,
       "unit": "%",
       "status": "Rising",
       "signal": 0
