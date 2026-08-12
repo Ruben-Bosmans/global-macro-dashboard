@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-08-11",
+  "timestamp": "2026-08-12",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -470,7 +470,7 @@
   "validation": {
     "credit_spread_10y_2y": {
       "label": "Yield Curve (10Y-2Y)",
-      "value": 0.47,
+      "value": 0.48,
       "unit": "%",
       "status": "Inverted",
       "signal": -1,
@@ -494,7 +494,7 @@
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 15.44,
+      "value": 15.28,
       "unit": "idx",
       "status": "Calm",
       "signal": 1,
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5704,
+      "value": 0.5776,
       "unit": "ratio",
       "status": "Rising",
       "signal": -1,
