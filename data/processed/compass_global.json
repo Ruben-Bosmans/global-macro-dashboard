@@ -1,6 +1,6 @@
 {
   "region": "Global",
-  "timestamp": "2026-08-12",
+  "timestamp": "2026-08-13",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -13,8 +13,8 @@
     "direction": 0,
     "direction_label": "Flat",
     "indicator": "CPI Average G5 YoY%",
-    "value": 1.77,
-    "change_3m": 0.099
+    "value": 1.74,
+    "change_3m": -0.002
   },
   "quadrant": {
     "number": 0,
@@ -133,10 +133,10 @@
     },
     {
       "date": "2022-06",
-      "quadrant": 3,
-      "label": "Stagflation",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": -1,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2022-07",
@@ -147,10 +147,10 @@
     },
     {
       "date": "2022-08",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 4,
+      "label": "Recession",
       "growth_dir": -1,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2022-09",
@@ -231,10 +231,10 @@
     },
     {
       "date": "2023-08",
-      "quadrant": 1,
-      "label": "Goldilocks",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": 1,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2023-09",
@@ -248,7 +248,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2023-11",
@@ -262,7 +262,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2024-01",
@@ -304,7 +304,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2024-07",
@@ -325,7 +325,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2024-10",
@@ -339,7 +339,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2024-12",
@@ -353,14 +353,14 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2025-02",
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2025-03",
@@ -374,7 +374,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2025-05",
@@ -388,7 +388,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2025-07",
@@ -409,7 +409,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2025-10",
@@ -434,10 +434,10 @@
     },
     {
       "date": "2026-01",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 2,
+      "label": "Overheating",
       "growth_dir": 1,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2026-02",
@@ -464,7 +464,7 @@
   "validation": {
     "dxy": {
       "label": "Dollar Index (DXY)",
-      "value": 99.85,
+      "value": 100.03,
       "unit": "idx",
       "status": "Stable",
       "signal": 0,
@@ -472,7 +472,7 @@
     },
     "gold": {
       "label": "Gold (USD/oz)",
-      "value": 4464.0,
+      "value": 4436.0,
       "unit": "USD",
       "status": "Rising",
       "signal": 1,
@@ -480,10 +480,10 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5776,
+      "value": 0.5725,
       "unit": "ratio",
-      "status": "Rising",
-      "signal": -1,
+      "status": "Stable",
+      "signal": 0,
       "duration_months": 0
     },
     "credit_em_hy_oas": {
@@ -496,7 +496,7 @@
     },
     "vix": {
       "label": "VIX",
-      "value": 15.3,
+      "value": 14.6,
       "unit": "idx",
       "status": "Calm",
       "signal": 1,

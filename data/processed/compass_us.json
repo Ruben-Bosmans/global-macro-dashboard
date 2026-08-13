@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-08-12",
+  "timestamp": "2026-08-13",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -18,15 +18,15 @@
     "direction": 1,
     "direction_label": "Rising",
     "indicator": "CPI US YoY%",
-    "value": 3.73,
-    "change_3m": 1.043,
-    "date": "2026-06-01T00:00:00"
+    "value": 3.54,
+    "change_3m": 0.535,
+    "date": "2026-07-01T00:00:00"
   },
   "quadrant": {
     "number": 2,
     "label": "Overheating",
     "description": "Growth rising, inflation rising",
-    "stability_months": 3
+    "stability_months": 4
   },
   "asset_signals": {
     "Equities (growth)": 0,
@@ -139,10 +139,10 @@
     },
     {
       "date": "2022-06",
-      "quadrant": 3,
-      "label": "Stagflation",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": -1,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2022-07",
@@ -153,10 +153,10 @@
     },
     {
       "date": "2022-08",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 4,
+      "label": "Recession",
       "growth_dir": -1,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2022-09",
@@ -237,10 +237,10 @@
     },
     {
       "date": "2023-08",
-      "quadrant": 1,
-      "label": "Goldilocks",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": 1,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2023-09",
@@ -251,10 +251,10 @@
     },
     {
       "date": "2023-10",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 1,
+      "label": "Goldilocks",
       "growth_dir": 1,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2023-11",
@@ -268,7 +268,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2024-01",
@@ -310,7 +310,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2024-07",
@@ -331,7 +331,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2024-10",
@@ -342,10 +342,10 @@
     },
     {
       "date": "2024-11",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 2,
+      "label": "Overheating",
       "growth_dir": 1,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2024-12",
@@ -356,17 +356,17 @@
     },
     {
       "date": "2025-01",
-      "quadrant": 2,
-      "label": "Overheating",
-      "growth_dir": 1,
-      "inflation_dir": 1
-    },
-    {
-      "date": "2025-02",
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 1,
       "inflation_dir": 0
+    },
+    {
+      "date": "2025-02",
+      "quadrant": 1,
+      "label": "Goldilocks",
+      "growth_dir": 1,
+      "inflation_dir": -1
     },
     {
       "date": "2025-03",
@@ -380,7 +380,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2025-05",
@@ -391,10 +391,10 @@
     },
     {
       "date": "2025-06",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 3,
+      "label": "Stagflation",
       "growth_dir": -1,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2025-07",
@@ -415,7 +415,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2025-10",
@@ -440,10 +440,10 @@
     },
     {
       "date": "2026-01",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 2,
+      "label": "Overheating",
       "growth_dir": 1,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2026-02",
@@ -478,7 +478,7 @@
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
-      "value": 2.7,
+      "value": 2.72,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -486,7 +486,7 @@
     },
     "credit_us_ig_oas": {
       "label": "US IG Spreads",
-      "value": 0.78,
+      "value": 0.79,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -494,7 +494,7 @@
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 15.28,
+      "value": 14.55,
       "unit": "idx",
       "status": "Calm",
       "signal": 1,
@@ -510,10 +510,10 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5776,
+      "value": 0.5725,
       "unit": "ratio",
-      "status": "Rising",
-      "signal": -1,
+      "status": "Stable",
+      "signal": 0,
       "duration_months": 0
     }
   }
