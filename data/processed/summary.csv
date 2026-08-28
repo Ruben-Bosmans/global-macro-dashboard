@@ -91,8 +91,8 @@ credit_spread_10y_3m,10Y-3M Spread,rates,yield_curve,%,US,2026-08-26,0.81,,,,,,0
 credit_spread_aaa_10y,AAA Corp - 10Y,credit,inv_grade,%,US,2026-08-25,1.19,,,,,,0.0,-0.05,0.0,0.11,
 credit_term_prem_10y,Term Premium 10Y,rates,yield_curve,%,US,2026-08-21,0.8682,,,,,,0.0204,0.0289,0.0194,0.3521,
 credit_mortgage_30y,30Y Mortgage Rate,rates,mortgage,%,US,2026-08-20,6.65,,,,,,-0.02,0.1,0.27,3.56,
-rate_us,Fed Funds Rate,rates,policy_rate,%,US,2026-08-25,3.63,,,,,,,,0.0,0.0,
-rate_ecb,ECB Deposit Rate,rates,policy_rate,%,EU,2026-08-26,2.25,,,,,,,,0.0,0.0,
+rate_us,Fed Funds Rate,rates,policy_rate,%,US,2026-08-26,3.63,,,,,,,,0.0,0.0,
+rate_ecb,ECB Deposit Rate,rates,policy_rate,%,EU,2026-08-27,2.25,,,,,,,,0.0,0.0,
 rate_uk,BoE Base Rate,rates,policy_rate,%,UK,2017-01-01,0.25,,,,,,,,0.0,-0.25,
 rate_jp,BoJ Rate,rates,policy_rate,%,JP,2023-12-01,0.3,,,,,,,,0.0,0.0,
 rate_ca,BoC Rate,rates,policy_rate,%,CA,2023-12-01,5.25,,,,,,,,0.0,0.75,
@@ -243,7 +243,7 @@ oecd_cli_g20,CLI G20,economy,leading_indicator,index,G20,2026-04-01,100.6478,,,,
 oecd_cli_nafta,CLI NAFTA,economy,leading_indicator,index,NAFTA,2026-04-01,101.1257,,,,,,,,0.0808,1.4702,
 oecd_cli_g4e,CLI G4 Europe,economy,leading_indicator,index,EU,2026-04-01,100.8491,,,,,,,,-0.0682,0.8901,
 oecd_cli_a5m,CLI Asia 5 Major,economy,leading_indicator,index,ASIA,2026-04-01,100.1249,,,,,,,,0.0873,0.0219,
-bs_fed,Fed Total Assets,central_banks,balance_sheet,mln_usd,US,2026-08-31,6745699.0,,,,,,,,7509.0,142315.0,2.1552
+bs_fed,Fed Total Assets,central_banks,balance_sheet,mln_usd,US,2026-08-31,6730912.0,,,,,,,,-7278.0,127528.0,1.9313
 bs_ecb,ECB Total Assets,central_banks,balance_sheet,mln_eur,EU,2026-08-31,5913041.0,,,,,,,,-28207.0,-176352.0,-2.8961
 bs_boj,BoJ Total Assets,central_banks,balance_sheet,mln_jpy,JP,2026-07-31,6442957.0,,,,,,,,47448.0,-771141.0,-10.6894
 bs_boe,BoE Total Assets (hist.),central_banks,balance_sheet,mln_gbp,UK,2016-01-31,22.6,,,,,,,,0.06,18.69,478.0051
