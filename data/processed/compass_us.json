@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-08-31",
+  "timestamp": "2026-09-01",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -470,7 +470,7 @@
   "validation": {
     "credit_spread_10y_2y": {
       "label": "Yield Curve (10Y-2Y)",
-      "value": 0.39,
+      "value": 0.41,
       "unit": "%",
       "status": "Inverted",
       "signal": -1,
@@ -478,11 +478,11 @@
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
-      "value": 2.63,
+      "value": 2.6,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
-      "duration_months": 37
+      "duration_months": 36
     },
     "credit_us_ig_oas": {
       "label": "US IG Spreads",
@@ -490,11 +490,11 @@
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
-      "duration_months": 37
+      "duration_months": 36
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 15.22,
+      "value": 14.92,
       "unit": "idx",
       "status": "Calm",
       "signal": 1,
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5837,
+      "value": 0.583,
       "unit": "ratio",
       "status": "Falling",
       "signal": 1,
