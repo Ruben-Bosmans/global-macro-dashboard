@@ -1,6 +1,6 @@
 {
   "region": "Global",
-  "timestamp": "2026-09-06",
+  "timestamp": "2026-09-07",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -464,7 +464,7 @@
   "validation": {
     "dxy": {
       "label": "Dollar Index (DXY)",
-      "value": 99.16,
+      "value": 99.12,
       "unit": "idx",
       "status": "Stable",
       "signal": 0,
