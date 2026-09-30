@@ -1,6 +1,6 @@
 {
   "region": "EU",
-  "timestamp": "2026-09-29",
+  "timestamp": "2026-09-30",
   "growth": {
     "direction": 0,
     "direction_label": "Flat",
@@ -472,7 +472,7 @@
     },
     "credit_eu_hy_oas": {
       "label": "EU HY Spreads",
-      "value": 2.79,
+      "value": 2.89,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
