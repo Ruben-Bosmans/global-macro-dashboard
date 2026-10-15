@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-10-14",
+  "timestamp": "2026-10-15",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -18,9 +18,9 @@
     "direction": -1,
     "direction_label": "Falling",
     "indicator": "CPI US YoY%",
-    "value": 3.71,
-    "change_3m": -0.186,
-    "date": "2026-08-01T00:00:00"
+    "value": 4.02,
+    "change_3m": -0.222,
+    "date": "2026-09-01T00:00:00"
   },
   "quadrant": {
     "number": 1,
@@ -125,10 +125,10 @@
     },
     {
       "date": "2022-04",
-      "quadrant": 3,
-      "label": "Stagflation",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": -1,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2022-05",
@@ -139,10 +139,10 @@
     },
     {
       "date": "2022-06",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 4,
+      "label": "Recession",
       "growth_dir": -1,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2022-07",
@@ -226,7 +226,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2023-07",
@@ -237,10 +237,10 @@
     },
     {
       "date": "2023-08",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 1,
+      "label": "Goldilocks",
       "growth_dir": 1,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2023-09",
@@ -251,10 +251,10 @@
     },
     {
       "date": "2023-10",
-      "quadrant": 1,
-      "label": "Goldilocks",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": 1,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2023-11",
@@ -293,10 +293,10 @@
     },
     {
       "date": "2024-04",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 1,
+      "label": "Goldilocks",
       "growth_dir": 1,
-      "inflation_dir": 0
+      "inflation_dir": -1
     },
     {
       "date": "2024-05",
@@ -317,7 +317,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2024-08",
@@ -331,7 +331,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2024-10",
@@ -342,17 +342,17 @@
     },
     {
       "date": "2024-11",
-      "quadrant": 2,
-      "label": "Overheating",
-      "growth_dir": 1,
-      "inflation_dir": 1
-    },
-    {
-      "date": "2024-12",
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 1,
       "inflation_dir": 0
+    },
+    {
+      "date": "2024-12",
+      "quadrant": 1,
+      "label": "Goldilocks",
+      "growth_dir": 1,
+      "inflation_dir": -1
     },
     {
       "date": "2025-01",
@@ -363,10 +363,10 @@
     },
     {
       "date": "2025-02",
-      "quadrant": 1,
-      "label": "Goldilocks",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": 1,
-      "inflation_dir": -1
+      "inflation_dir": 0
     },
     {
       "date": "2025-03",
@@ -380,7 +380,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2025-05",
@@ -401,7 +401,7 @@
       "quadrant": 0,
       "label": "Transition",
       "growth_dir": 0,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2025-08",
@@ -426,10 +426,10 @@
     },
     {
       "date": "2025-11",
-      "quadrant": 0,
-      "label": "Transition",
+      "quadrant": 2,
+      "label": "Overheating",
       "growth_dir": 1,
-      "inflation_dir": 0
+      "inflation_dir": 1
     },
     {
       "date": "2025-12",
@@ -454,10 +454,10 @@
     },
     {
       "date": "2026-03",
-      "quadrant": 2,
-      "label": "Overheating",
+      "quadrant": 0,
+      "label": "Transition",
       "growth_dir": 1,
-      "inflation_dir": 1
+      "inflation_dir": 0
     },
     {
       "date": "2026-04",
@@ -470,7 +470,7 @@
   "validation": {
     "credit_spread_10y_2y": {
       "label": "Yield Curve (10Y-2Y)",
-      "value": 0.42,
+      "value": 0.37,
       "unit": "%",
       "status": "Inverted",
       "signal": -1,
@@ -478,7 +478,7 @@
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
-      "value": 3.11,
+      "value": 3.16,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -494,7 +494,7 @@
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 15.27,
+      "value": 17.41,
       "unit": "idx",
       "status": "Calm",
       "signal": 1,
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5351,
+      "value": 0.5409,
       "unit": "ratio",
       "status": "Stable",
       "signal": 0,
