@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-11-15",
+  "timestamp": "2026-11-16",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -494,7 +494,7 @@
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 19.3,
+      "value": 19.92,
       "unit": "idx",
       "status": "Elevated",
       "signal": 0,
@@ -510,7 +510,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5139,
+      "value": 0.5113,
       "unit": "ratio",
       "status": "Falling",
       "signal": 1,
