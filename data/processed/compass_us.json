@@ -1,6 +1,6 @@
 {
   "region": "US",
-  "timestamp": "2026-11-16",
+  "timestamp": "2026-11-18",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -11,7 +11,7 @@
     "confirmation": {
       "indicator": "Industrial Production US",
       "direction": 1,
-      "value": 103.95
+      "value": 103.4
     }
   },
   "inflation": {
@@ -470,7 +470,7 @@
   "validation": {
     "credit_spread_10y_2y": {
       "label": "Yield Curve (10Y-2Y)",
-      "value": 0.27,
+      "value": 0.3,
       "unit": "%",
       "status": "Inverted",
       "signal": -1,
@@ -478,7 +478,7 @@
     },
     "credit_us_hy_oas": {
       "label": "US HY Spreads",
-      "value": 3.2,
+      "value": 3.34,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -486,7 +486,7 @@
     },
     "credit_us_ig_oas": {
       "label": "US IG Spreads",
-      "value": 0.89,
+      "value": 0.9,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -494,7 +494,7 @@
     },
     "vix": {
       "label": "VIX (market fear)",
-      "value": 19.92,
+      "value": 23.82,
       "unit": "idx",
       "status": "Elevated",
       "signal": 0,
@@ -510,10 +510,10 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5113,
+      "value": 0.514,
       "unit": "ratio",
-      "status": "Falling",
-      "signal": 1,
+      "status": "Stable",
+      "signal": 0,
       "duration_months": 0
     }
   }
