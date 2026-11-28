@@ -1,6 +1,6 @@
 {
   "region": "Global",
-  "timestamp": "2026-11-27",
+  "timestamp": "2026-11-28",
   "growth": {
     "direction": 1,
     "direction_label": "Rising",
@@ -464,7 +464,7 @@
   "validation": {
     "dxy": {
       "label": "Dollar Index (DXY)",
-      "value": 103.75,
+      "value": 104.01,
       "unit": "idx",
       "status": "Stable",
       "signal": 0,
@@ -472,7 +472,7 @@
     },
     "gold": {
       "label": "Gold (USD/oz)",
-      "value": 3691.0,
+      "value": 3640.0,
       "unit": "USD",
       "status": "Falling",
       "signal": -1,
@@ -480,7 +480,7 @@
     },
     "gold_sp500_ratio": {
       "label": "Gold / S&P 500 Ratio",
-      "value": 0.5139,
+      "value": 0.4987,
       "unit": "ratio",
       "status": "Stable",
       "signal": 0,
@@ -488,7 +488,7 @@
     },
     "credit_em_hy_oas": {
       "label": "EM HY Spreads",
-      "value": 4.4,
+      "value": 4.5,
       "unit": "bps",
       "status": "Normal",
       "signal": 1,
@@ -496,7 +496,7 @@
     },
     "vix": {
       "label": "VIX",
-      "value": 26.8,
+      "value": 23.8,
       "unit": "idx",
       "status": "Elevated",
       "signal": 0,
